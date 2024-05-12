@@ -23,4 +23,7 @@ public class Result {
         return new Result(Constants.CODE_200, "", data);
     }
 
+    public static Result error(String code, String msg) {
+        return new Result(code, msg, null);
+    }
 }
