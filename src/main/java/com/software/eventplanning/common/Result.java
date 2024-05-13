@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Result {
-    private String code;
+    private Integer code;
     private String msg;
     private Object data;
 
@@ -23,7 +23,7 @@ public class Result {
         return new Result(Constants.CODE_200, "", data);
     }
 
-    public static Result error(String code, String msg) {
+    public static Result error(Integer code, String msg) {
         return new Result(code, msg, null);
     }
 }
