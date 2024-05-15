@@ -14,9 +14,9 @@ public class GlobalExceptionHandler {
      * @return
      * @ExceptionHandler相当于controller的@RequestMapping 如果抛出的的是ServiceException，则调用该方法
      */
-    @ExceptionHandler(ServiceException.class)
-    @ResponseBody
-    public Result handle(ServiceException se) {
-        return Result.error(se.getCode(), se.getMessage());
-    }
+//    @ExceptionHandler(ServiceException.class)
+//    @ResponseBody
+//    public Result handle(ServiceException se) {
+//        return Result.error(se.getCode(), se.getMessage());
+//    }
 }
