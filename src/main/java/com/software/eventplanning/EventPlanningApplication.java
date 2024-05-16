@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
-@MapperScan
+@MapperScan(basePackages = "com.software.eventplanning.mapper")
 @EnableWebMvc
 public class EventPlanningApplication {
 

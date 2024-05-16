@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan("com.software.eventplanning.dao")
+@MapperScan("com.software.eventplanning.mapper")
 public class MybatisPlusConfig {
 
     @Bean
