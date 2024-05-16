@@ -25,9 +25,6 @@ public class RegisterServiceImpl extends ServiceImpl<UserMapper, User> implement
     @Autowired
     private JavaMailSender mailSender;
 
-    @Autowired
-    private UserMapper userMapper;
-
     @Value("${spring.mail.username}")
     private String from;
 
