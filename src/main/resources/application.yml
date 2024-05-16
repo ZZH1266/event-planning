@@ -6,6 +6,16 @@ spring:
     url: jdbc:mysql://localhost:3306/eventplanning?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
     username: root
     password: root
+  mail:
+    host: smtp.qq.com
+    username: dcdcddcdcdcscscd@qq.com
+    password: mopjjzyxsjvejfda
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable=true: true
+    default-encoding: UTF-8
 mybatis:
   mapper-locations: classpath:mapper/*.xml
     #configuration:
