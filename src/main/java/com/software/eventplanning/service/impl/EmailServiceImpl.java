@@ -5,7 +5,6 @@ import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.software.eventplanning.common.Constants;
-import com.software.eventplanning.controller.dto.LoginDTO;
 import com.software.eventplanning.controller.dto.RegisterDTO;
 import com.software.eventplanning.entity.User;
 import com.software.eventplanning.exception.ServiceException;
@@ -13,7 +12,6 @@ import com.software.eventplanning.mapper.UserMapper;
 import com.software.eventplanning.service.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -92,12 +90,27 @@ public class EmailServiceImpl extends ServiceImpl<UserMapper, User> implements I
         }
 
         //将用户信息存入数据库
-        User user = new User();
-        user.setUsername(registerDTO.getUsername());
-        user.setPassword(registerDTO.getPassword());
-        user.setRole("user");
-        user.setEmail(email);
-        userMapper.insert(user);
-        return user;
+        User one = getUserInfo(registerDTO);
+        if (one == null) {
+            one = new User();
+            BeanUtil.copyProperties(registerDTO, one, true);
+            save(one);
+        } else {
+            throw new ServiceException(Constants.CODE_600, "用户名或邮箱已存在");
+        }
+        return one;
+    }
+    private User getUserInfo(RegisterDTO userDTO) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", userDTO.getUsername());
+        queryWrapper.eq("email", userDTO.getEmail());
+        User one;
+        try {
+            one = getOne(queryWrapper);
+        } catch (Exception e) {
+            LOG.error(e);
+            throw new ServiceException(Constants.CODE_500, "系统错误");
+        }
+        return one;
     }
 }
