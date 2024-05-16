@@ -1,12 +1,19 @@
 package com.software.eventplanning.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.log.Log;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.software.eventplanning.common.Constants;
+import com.software.eventplanning.controller.dto.LoginDTO;
 import com.software.eventplanning.controller.dto.RegisterDTO;
 import com.software.eventplanning.entity.User;
+import com.software.eventplanning.exception.ServiceException;
 import com.software.eventplanning.mapper.UserMapper;
 import com.software.eventplanning.service.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -25,6 +32,8 @@ public class EmailServiceImpl extends ServiceImpl<UserMapper, User> implements I
 
     @Value("${spring.mail.username}")
     private String from;
+
+    private static final Log LOG = Log.get();
 
     @Override
     public boolean sendEmail(String email, HttpSession session) {
@@ -67,7 +76,7 @@ public class EmailServiceImpl extends ServiceImpl<UserMapper, User> implements I
      * 验证验证码是否一致
      */
     @Override
-    public boolean registered(RegisterDTO registerDTO, HttpSession session) {
+    public User registered(RegisterDTO registerDTO, HttpSession session) {
         //获取session中的验证码
         String email = (String) session.getAttribute("email");
         String sessionCode = (String) session.getAttribute("code");
@@ -77,9 +86,9 @@ public class EmailServiceImpl extends ServiceImpl<UserMapper, User> implements I
 
         //判断验证码是否一致
         if (email == null || email.isEmpty()) {
-            return false;
+            throw new ServiceException(Constants.CODE_601, "未输入邮箱");
         } else if (!sessionCode.equals(voCode)) {
-            return false;
+            throw new ServiceException(Constants.CODE_602, "验证码错误");
         }
 
         //将用户信息存入数据库
@@ -89,6 +98,6 @@ public class EmailServiceImpl extends ServiceImpl<UserMapper, User> implements I
         user.setRole("user");
         user.setEmail(email);
         userMapper.insert(user);
-        return true;
+        return user;
     }
 }

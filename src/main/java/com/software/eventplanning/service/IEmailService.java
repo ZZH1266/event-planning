@@ -9,5 +9,5 @@ import javax.servlet.http.HttpSession;
 public interface IEmailService extends IService<User> {
     boolean sendEmail(String email, HttpSession session);
 
-    boolean registered(RegisterDTO registerDTO, HttpSession session);
+    User registered(RegisterDTO registerDTO, HttpSession session);
 }

@@ -1,5 +1,6 @@
 package com.software.eventplanning.controller;
 
+import com.software.eventplanning.common.Constants;
 import com.software.eventplanning.common.Result;
 import com.software.eventplanning.controller.dto.RegisterDTO;
 import com.software.eventplanning.service.IEmailService;
@@ -26,7 +27,14 @@ public class RegisterController {
     @PostMapping("/register")
     @ResponseBody
     public Result register(RegisterDTO registerDTO, HttpSession session) {
-        emailService.registered(registerDTO, session);
-        return Result.success();
+        String username = registerDTO.getUsername();
+        String password = registerDTO.getPassword();
+        String email = registerDTO.getEmail();
+        String code = registerDTO.getCode();
+        registerDTO.setRole("user");
+        if (username == null || password == null || email == null || code == null) {
+            return Result.error(Constants.CODE_400,"参数错误");
+        }
+        return Result.success(emailService.registered(registerDTO, session));
     }
 }
