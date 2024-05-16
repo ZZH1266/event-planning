@@ -3,7 +3,7 @@ package com.software.eventplanning.controller;
 import com.software.eventplanning.common.Constants;
 import com.software.eventplanning.common.Result;
 import com.software.eventplanning.controller.dto.RegisterDTO;
-import com.software.eventplanning.service.IEmailService;
+import com.software.eventplanning.service.IRegisterService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 public class RegisterController {
 
     @Resource
-    private IEmailService emailService;
+    private IRegisterService emailService;
 
     @PostMapping("/sendEmail")
     @ResponseBody

@@ -11,7 +11,7 @@ public class GlobalExceptionHandler {
 
     /**
      * @param se 业务异常
-     * @return
+     * @return Result
      * @ExceptionHandler相当于controller的@RequestMapping 如果抛出的的是ServiceException，则调用该方法
      */
     @ExceptionHandler(ServiceException.class)

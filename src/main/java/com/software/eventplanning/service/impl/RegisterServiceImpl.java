@@ -9,7 +9,7 @@ import com.software.eventplanning.controller.dto.RegisterDTO;
 import com.software.eventplanning.entity.User;
 import com.software.eventplanning.exception.ServiceException;
 import com.software.eventplanning.mapper.UserMapper;
-import com.software.eventplanning.service.IEmailService;
+import com.software.eventplanning.service.IRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Random;
 
 @Service
-public class EmailServiceImpl extends ServiceImpl<UserMapper, User> implements IEmailService {
+public class RegisterServiceImpl extends ServiceImpl<UserMapper, User> implements IRegisterService {
 
     @Autowired
     private JavaMailSender mailSender;

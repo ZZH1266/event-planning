@@ -6,7 +6,7 @@ import com.software.eventplanning.entity.User;
 
 import javax.servlet.http.HttpSession;
 
-public interface IEmailService extends IService<User> {
+public interface IRegisterService extends IService<User> {
     boolean sendEmail(String email, HttpSession session);
 
     User registered(RegisterDTO registerDTO, HttpSession session);
