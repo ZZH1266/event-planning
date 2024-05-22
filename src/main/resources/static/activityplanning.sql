@@ -11,7 +11,7 @@
  Target Server Version : 80034 (8.0.34)
  File Encoding         : 65001
 
- Date: 22/05/2024 17:57:25
+ Date: 22/05/2024 18:39:57
 */
 
 SET NAMES utf8mb4;
@@ -31,9 +31,12 @@ CREATE TABLE `activities`  (
   `status` enum('筹备中','进行中','已完成') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '筹备中',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `template_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`activity_id`) USING BTREE,
   INDEX `created_by`(`created_by` ASC) USING BTREE,
-  CONSTRAINT `activities_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  INDEX `template_id`(`template_id` ASC) USING BTREE,
+  CONSTRAINT `activities_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `activities_ibfk_2` FOREIGN KEY (`template_id`) REFERENCES `activity_templates` (`template_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -61,6 +64,26 @@ CREATE TABLE `activity_reports`  (
 
 -- ----------------------------
 -- Records of activity_reports
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for activity_templates
+-- ----------------------------
+DROP TABLE IF EXISTS `activity_templates`;
+CREATE TABLE `activity_templates`  (
+  `template_id` int NOT NULL AUTO_INCREMENT,
+  `template_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+  `created_by` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`template_id`) USING BTREE,
+  INDEX `created_by`(`created_by` ASC) USING BTREE,
+  CONSTRAINT `activity_templates_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of activity_templates
 -- ----------------------------
 
 -- ----------------------------
@@ -357,6 +380,48 @@ CREATE TABLE `schedules`  (
 
 -- ----------------------------
 -- Records of schedules
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for template_agendas
+-- ----------------------------
+DROP TABLE IF EXISTS `template_agendas`;
+CREATE TABLE `template_agendas`  (
+  `agenda_id` int NOT NULL AUTO_INCREMENT,
+  `template_id` int NOT NULL,
+  `agenda_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `speaker` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `start_time` time NULL DEFAULT NULL,
+  `end_time` time NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`agenda_id`) USING BTREE,
+  INDEX `template_id`(`template_id` ASC) USING BTREE,
+  CONSTRAINT `template_agendas_ibfk_1` FOREIGN KEY (`template_id`) REFERENCES `activity_templates` (`template_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of template_agendas
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for template_materials
+-- ----------------------------
+DROP TABLE IF EXISTS `template_materials`;
+CREATE TABLE `template_materials`  (
+  `material_id` int NOT NULL AUTO_INCREMENT,
+  `template_id` int NOT NULL,
+  `material_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `material_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`material_id`) USING BTREE,
+  INDEX `template_id`(`template_id` ASC) USING BTREE,
+  CONSTRAINT `template_materials_ibfk_1` FOREIGN KEY (`template_id`) REFERENCES `activity_templates` (`template_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of template_materials
 -- ----------------------------
 
 -- ----------------------------
