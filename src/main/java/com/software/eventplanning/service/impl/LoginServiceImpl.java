@@ -7,20 +7,20 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.software.eventplanning.common.Constants;
 import com.software.eventplanning.controller.dto.LoginDTO;
 import com.software.eventplanning.mapper.UserMapper;
-import com.software.eventplanning.entity.User;
+import com.software.eventplanning.entity.Users;
 import com.software.eventplanning.exception.ServiceException;
 import com.software.eventplanning.service.ILoginService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements ILoginService {
+public class LoginServiceImpl extends ServiceImpl<UserMapper, Users> implements ILoginService {
 
     private static final Log LOG = Log.get();
 
     @Override
     public LoginDTO login(LoginDTO loginDTO) {
         System.out.println("loginDTO: " + loginDTO);
-        User one = getUserInfo(loginDTO);
+        Users one = getUserInfo(loginDTO);
         if (one != null) {
             BeanUtil.copyProperties(one, loginDTO, true);
             return loginDTO;
@@ -29,11 +29,11 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements I
         }
     }
 
-    private User getUserInfo(LoginDTO loginDTO) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+    private Users getUserInfo(LoginDTO loginDTO) {
+        QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", loginDTO.getUsername());
         queryWrapper.eq("password", loginDTO.getPassword());
-        User one;
+        Users one;
         try {
             one = getOne(queryWrapper);
         } catch (Exception e) {

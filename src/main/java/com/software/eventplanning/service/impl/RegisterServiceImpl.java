@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.software.eventplanning.common.Constants;
 import com.software.eventplanning.controller.dto.RegisterDTO;
-import com.software.eventplanning.entity.User;
+import com.software.eventplanning.entity.Users;
 import com.software.eventplanning.exception.ServiceException;
 import com.software.eventplanning.mapper.UserMapper;
 import com.software.eventplanning.service.IRegisterService;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Random;
 
 @Service
-public class RegisterServiceImpl extends ServiceImpl<UserMapper, User> implements IRegisterService {
+public class RegisterServiceImpl extends ServiceImpl<UserMapper, Users> implements IRegisterService {
 
     @Autowired
     private JavaMailSender mailSender;
@@ -71,7 +71,7 @@ public class RegisterServiceImpl extends ServiceImpl<UserMapper, User> implement
      * 验证验证码是否一致
      */
     @Override
-    public User registered(RegisterDTO registerDTO, HttpSession session) {
+    public Users registered(RegisterDTO registerDTO, HttpSession session) {
         //获取session中的验证码
         String email = (String) session.getAttribute("email");
         String sessionCode = (String) session.getAttribute("code");
@@ -87,9 +87,9 @@ public class RegisterServiceImpl extends ServiceImpl<UserMapper, User> implement
         }
 
         //将用户信息存入数据库
-        User one = getUserInfo(registerDTO);
+        Users one = getUserInfo(registerDTO);
         if (one == null) {
-            one = new User();
+            one = new Users();
             BeanUtil.copyProperties(registerDTO, one, true);
             save(one);
         } else {
@@ -97,11 +97,11 @@ public class RegisterServiceImpl extends ServiceImpl<UserMapper, User> implement
         }
         return one;
     }
-    private User getUserInfo(RegisterDTO userDTO) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+    private Users getUserInfo(RegisterDTO userDTO) {
+        QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", userDTO.getUsername());
         queryWrapper.eq("email", userDTO.getEmail());
-        User one;
+        Users one;
         try {
             one = getOne(queryWrapper);
         } catch (Exception e) {

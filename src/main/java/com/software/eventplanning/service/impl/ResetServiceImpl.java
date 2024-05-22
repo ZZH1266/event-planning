@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.software.eventplanning.common.Constants;
 import com.software.eventplanning.controller.dto.ResetDTO;
-import com.software.eventplanning.entity.User;
+import com.software.eventplanning.entity.Users;
 import com.software.eventplanning.exception.ServiceException;
 import com.software.eventplanning.mapper.UserMapper;
 import com.software.eventplanning.service.IResetService;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 
 @Service
-public class ResetServiceImpl extends ServiceImpl<UserMapper, User> implements IResetService {
+public class ResetServiceImpl extends ServiceImpl<UserMapper, Users> implements IResetService {
 
     private static final Log LOG = Log.get();
 
     @Override
-    public User reset(ResetDTO resetDTO, HttpSession session) {
+    public Users reset(ResetDTO resetDTO, HttpSession session) {
         String code = (String) session.getAttribute("code");
         String email = (String) session.getAttribute("email");
         String voCode = resetDTO.getCode();
@@ -28,7 +28,7 @@ public class ResetServiceImpl extends ServiceImpl<UserMapper, User> implements I
         }else if (!code.equals(voCode)) {
             throw new ServiceException(-1, "验证码错误");
         }
-        User user = getUserInfo(resetDTO);
+        Users user = getUserInfo(resetDTO);
         if (user == null) {
             throw new ServiceException(-1, "用户不存在");
         } else {
@@ -38,11 +38,11 @@ public class ResetServiceImpl extends ServiceImpl<UserMapper, User> implements I
         }
     }
 
-    private User getUserInfo(ResetDTO userDTO) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+    private Users getUserInfo(ResetDTO userDTO) {
+        QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", userDTO.getUsername());
         queryWrapper.eq("email", userDTO.getEmail());
-        User one;
+        Users one;
         try {
             one = getOne(queryWrapper);
         } catch (Exception e) {

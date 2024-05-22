@@ -2,11 +2,11 @@ package com.software.eventplanning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.software.eventplanning.controller.dto.ResetDTO;
-import com.software.eventplanning.entity.User;
+import com.software.eventplanning.entity.Users;
 
 import javax.servlet.http.HttpSession;
 
-public interface IResetService extends IService<User> {
+public interface IResetService extends IService<Users> {
 
-    User reset(ResetDTO resetDTO, HttpSession session);
+    Users reset(ResetDTO resetDTO, HttpSession session);
 }
