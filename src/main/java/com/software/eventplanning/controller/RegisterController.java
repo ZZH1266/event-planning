@@ -32,7 +32,7 @@ public class RegisterController {
         String password = registerDTO.getPassword();
         String email = registerDTO.getEmail();
         String code = registerDTO.getCode();
-        registerDTO.setRole("user");
+        registerDTO.setRole(0);
         if (username == null || password == null || email == null || code == null) {
             return Result.error(Constants.CODE_400,"参数错误");
         }

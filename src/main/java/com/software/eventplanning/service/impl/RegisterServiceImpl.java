@@ -99,8 +99,9 @@ public class RegisterServiceImpl extends ServiceImpl<UserMapper, Users> implemen
     }
     private Users getUserInfo(RegisterDTO userDTO) {
         QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", userDTO.getUsername());
-        queryWrapper.eq("email", userDTO.getEmail());
+        queryWrapper.eq("username", userDTO.getUsername())
+                    .or()
+                    .eq("email", userDTO.getEmail());
         Users one;
         try {
             one = getOne(queryWrapper);
