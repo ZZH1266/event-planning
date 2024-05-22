@@ -29,4 +29,5 @@ public class Users {
     Timestamp createdTime;
     @TableField(value = "updated_at")
     Timestamp updatedTime;
+    Integer role;
 }

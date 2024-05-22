@@ -11,7 +11,7 @@
  Target Server Version : 80034 (8.0.34)
  File Encoding         : 65001
 
- Date: 22/05/2024 18:39:57
+ Date: 22/05/2024 18:52:08
 */
 
 SET NAMES utf8mb4;
@@ -345,23 +345,6 @@ CREATE TABLE `resources`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for roles
--- ----------------------------
-DROP TABLE IF EXISTS `roles`;
-CREATE TABLE `roles`  (
-  `role_id` int NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`role_id`) USING BTREE,
-  UNIQUE INDEX `role_name`(`role_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of roles
--- ----------------------------
-INSERT INTO `roles` VALUES (1, 'admin');
-INSERT INTO `roles` VALUES (2, 'user');
-
--- ----------------------------
 -- Table structure for schedules
 -- ----------------------------
 DROP TABLE IF EXISTS `schedules`;
@@ -425,25 +408,6 @@ CREATE TABLE `template_materials`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for user_roles
--- ----------------------------
-DROP TABLE IF EXISTS `user_roles`;
-CREATE TABLE `user_roles`  (
-  `user_role_id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `role_id` int NOT NULL,
-  PRIMARY KEY (`user_role_id`) USING BTREE,
-  INDEX `user_id`(`user_id` ASC) USING BTREE,
-  INDEX `role_id`(`role_id` ASC) USING BTREE,
-  CONSTRAINT `user_roles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of user_roles
--- ----------------------------
-
--- ----------------------------
 -- Table structure for users
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
@@ -454,14 +418,15 @@ CREATE TABLE `users`  (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `role` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `email`(`email` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'zzh', '111', 'zzh18736680168@outlook.com', '2024-05-22 17:55:30', '2024-05-22 17:55:30');
+INSERT INTO `users` VALUES (1, 'zzh', '111', 'zzh18736680168@outlook.com', '2024-05-22 17:55:30', '2024-05-22 18:51:09', 0);
 
 -- ----------------------------
 -- Table structure for verification_codes
