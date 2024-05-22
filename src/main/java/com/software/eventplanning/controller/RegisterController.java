@@ -5,6 +5,7 @@ import com.software.eventplanning.common.Result;
 import com.software.eventplanning.controller.dto.RegisterDTO;
 import com.software.eventplanning.service.IRegisterService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +27,7 @@ public class RegisterController {
 
     @PostMapping("/register")
     @ResponseBody
-    public Result register(RegisterDTO registerDTO, HttpSession session) {
+    public Result register(@RequestBody RegisterDTO registerDTO, HttpSession session) {
         String username = registerDTO.getUsername();
         String password = registerDTO.getPassword();
         String email = registerDTO.getEmail();
