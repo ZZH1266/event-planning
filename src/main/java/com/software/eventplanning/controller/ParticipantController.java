@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.software.eventplanning.common.Result;
 import com.software.eventplanning.controller.dto.ParticipantsDTO;
 import com.software.eventplanning.entity.Participants;
-import com.software.eventplanning.entity.Users;
 import com.software.eventplanning.service.IParticipantService;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.bind.annotation.*;
