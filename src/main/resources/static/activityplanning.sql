@@ -11,7 +11,7 @@
  Target Server Version : 80034 (8.0.34)
  File Encoding         : 65001
 
- Date: 22/05/2024 18:52:08
+ Date: 23/05/2024 16:30:38
 */
 
 SET NAMES utf8mb4;
@@ -268,7 +268,7 @@ CREATE TABLE `participants`  (
   `participant_id` int NOT NULL AUTO_INCREMENT,
   `activity_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `role` enum('Guest','Speaker','Worker','Participant') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Participant',
+  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '参与者',
   PRIMARY KEY (`participant_id`) USING BTREE,
   INDEX `activity_id`(`activity_id` ASC) USING BTREE,
   INDEX `user_id`(`user_id` ASC) USING BTREE,
@@ -421,12 +421,12 @@ CREATE TABLE `users`  (
   `role` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `email`(`email` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'zzh', '111', 'zzh18736680168@outlook.com', '2024-05-22 17:55:30', '2024-05-22 18:51:09', 0);
+INSERT INTO `users` VALUES (4, 'zzh', '222', 'zzh18736680168@outlook.com', '2024-05-22 19:10:48', '2024-05-22 19:10:48', 0);
 
 -- ----------------------------
 -- Table structure for verification_codes

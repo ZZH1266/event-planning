@@ -7,14 +7,12 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName(value = "event_user_relation")
 public class Participants {
     @TableId(type = IdType.AUTO)
     private Integer participantId;
     private Integer activityId;
     private Integer userId;
     @TableField(value = "role")
-    private ActivityRole activityRole;
+    private String activityRole;
+    private String username;
 }
-
-
