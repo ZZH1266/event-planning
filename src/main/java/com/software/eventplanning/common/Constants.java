@@ -9,4 +9,5 @@ public interface Constants {
     Integer CODE_600 = 600;
     Integer CODE_601 = 601;
     Integer CODE_602 = 602;
+    Integer CODE_402 = 402 ;
 }
