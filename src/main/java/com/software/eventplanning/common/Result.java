@@ -15,6 +15,8 @@ public class Result {
     private String msg;
     private Object data;
 
+
+
     public static Result success() {
         return new Result(Constants.CODE_200, "", null);
     }
