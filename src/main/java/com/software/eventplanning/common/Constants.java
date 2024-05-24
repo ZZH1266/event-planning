@@ -9,5 +9,7 @@ public interface Constants {
     Integer CODE_600 = 600;
     Integer CODE_601 = 601;
     Integer CODE_602 = 602;
+    Integer CODE_301 = 301; // 报销信息有空项
+    Integer CODE_302 = 302;
     Integer CODE_402 = 402 ;
 }

@@ -29,6 +29,7 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, Users> implements 
         }
     }
 
+    // DTO类型数据转换为数据库所需的类型
     private Users getUserInfo(LoginDTO loginDTO) {
         QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", loginDTO.getUsername());
