@@ -5,5 +5,5 @@ import com.software.eventplanning.entity.Users;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface UserMapper extends BaseMapper<Users> {
+public interface UsersMapper extends BaseMapper<Users> {
 }

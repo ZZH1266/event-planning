@@ -6,14 +6,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.software.eventplanning.common.Constants;
 import com.software.eventplanning.controller.dto.LoginDTO;
-import com.software.eventplanning.mapper.UserMapper;
+import com.software.eventplanning.mapper.UsersMapper;
 import com.software.eventplanning.entity.Users;
 import com.software.eventplanning.exception.ServiceException;
 import com.software.eventplanning.service.ILoginService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoginServiceImpl extends ServiceImpl<UserMapper, Users> implements ILoginService {
+public class LoginServiceImpl extends ServiceImpl<UsersMapper, Users> implements ILoginService {
 
     private static final Log LOG = Log.get();
 

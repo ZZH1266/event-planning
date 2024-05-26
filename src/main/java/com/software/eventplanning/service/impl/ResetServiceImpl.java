@@ -7,14 +7,14 @@ import com.software.eventplanning.common.Constants;
 import com.software.eventplanning.controller.dto.ResetDTO;
 import com.software.eventplanning.entity.Users;
 import com.software.eventplanning.exception.ServiceException;
-import com.software.eventplanning.mapper.UserMapper;
+import com.software.eventplanning.mapper.UsersMapper;
 import com.software.eventplanning.service.IResetService;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 
 @Service
-public class ResetServiceImpl extends ServiceImpl<UserMapper, Users> implements IResetService {
+public class ResetServiceImpl extends ServiceImpl<UsersMapper, Users> implements IResetService {
 
     private static final Log LOG = Log.get();
 

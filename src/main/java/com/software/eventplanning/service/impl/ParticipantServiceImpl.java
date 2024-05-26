@@ -5,14 +5,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.software.eventplanning.controller.dto.ParticipantsDTO;
 import com.software.eventplanning.entity.Participants;
 import com.software.eventplanning.entity.Users;
-import com.software.eventplanning.mapper.ParticipantMapper;
+import com.software.eventplanning.mapper.ParticipantsMapper;
 import com.software.eventplanning.service.ILoginService;
 import com.software.eventplanning.service.IParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ParticipantServiceImpl extends ServiceImpl<ParticipantMapper, Participants> implements IParticipantService {
+public class ParticipantServiceImpl extends ServiceImpl<ParticipantsMapper, Participants> implements IParticipantService {
 
     @Autowired
     private ILoginService userService;

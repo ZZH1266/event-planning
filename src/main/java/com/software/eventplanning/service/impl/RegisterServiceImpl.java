@@ -8,7 +8,7 @@ import com.software.eventplanning.common.Constants;
 import com.software.eventplanning.controller.dto.RegisterDTO;
 import com.software.eventplanning.entity.Users;
 import com.software.eventplanning.exception.ServiceException;
-import com.software.eventplanning.mapper.UserMapper;
+import com.software.eventplanning.mapper.UsersMapper;
 import com.software.eventplanning.service.IRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Random;
 
 @Service
-public class RegisterServiceImpl extends ServiceImpl<UserMapper, Users> implements IRegisterService {
+public class RegisterServiceImpl extends ServiceImpl<UsersMapper, Users> implements IRegisterService {
 
     @Autowired
     private JavaMailSender mailSender;
