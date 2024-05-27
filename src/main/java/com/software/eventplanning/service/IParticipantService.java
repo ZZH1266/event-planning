@@ -9,4 +9,5 @@ public interface IParticipantService extends IService<Participants> {
     boolean hasUser(ParticipantsDTO participantsDTO);
 
     Participants convertParticipantsDTOToParticipants(ParticipantsDTO participantsDTO);
+
 }

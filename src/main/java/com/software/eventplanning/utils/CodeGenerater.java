@@ -16,9 +16,6 @@ import java.util.Collections;
  */
 public class CodeGenerater {
 
-    public static void main(String[] args) {
-        generate();
-    }
 
     private static void generate() {
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/zzh?serverTimezone=GMT%2B", "root", "root")

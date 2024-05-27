@@ -3,17 +3,27 @@ package com.software.eventplanning.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.software.eventplanning.common.Constants;
 import com.software.eventplanning.controller.dto.AddActivitiesDTO;
 import com.software.eventplanning.entity.Activities;
 import com.software.eventplanning.exception.ServiceException;
 import com.software.eventplanning.mapper.ActivitiesMapper;
+import com.software.eventplanning.mapper.ParticipantsMapper;
 import com.software.eventplanning.service.IAddActivitiesService;
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AddActivitiesServiceImpl extends ServiceImpl<ActivitiesMapper, Activities> implements IAddActivitiesService {
+
+    @Autowired
+    ParticipantsMapper participantsMapper;
 
     private static final Log LOG= Log.get();
     @Override
@@ -31,6 +41,25 @@ public class AddActivitiesServiceImpl extends ServiceImpl<ActivitiesMapper, Acti
             throw new ServiceException(Constants.CODE_402,"活动名重复,请更换活动名");
         }
         return activity;
+    }
+
+    @Override
+    public IPage<Activities> showAllActivities(Integer pageNum, Integer pageSize, String activityName, Integer userId)
+    {
+        IPage<Activities> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<Activities> wrapper = new QueryWrapper<>();
+        // 按照活动id降序排列
+        wrapper.orderByDesc("activity_id");
+        // 根据activityName模糊查询活动
+        wrapper.like(Strings.isNotEmpty(activityName), "activity_name", activityName);
+
+        // 根据userId查询用户已经参加的活动
+        List<Integer> activityIds = participantsMapper.selectActivityIdsByUserId(userId);
+        for (Integer activityId : activityIds) {
+            wrapper.ne("activity_id", activityId);
+        }
+
+        return page(page, wrapper);
     }
 
     //用于检测创建的活动名是否重复

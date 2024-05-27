@@ -5,9 +5,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.software.eventplanning.common.Result;
 import com.software.eventplanning.controller.dto.ParticipantsDTO;
+import com.software.eventplanning.entity.ParticipantApplications;
 import com.software.eventplanning.entity.Participants;
+import com.software.eventplanning.service.IParticipantApplicationService;
 import com.software.eventplanning.service.IParticipantService;
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,6 +23,9 @@ public class ParticipantController {
 
     @Resource
     private IParticipantService participantService;
+
+    @Autowired
+    private IParticipantApplicationService participantAService;
 
     /**
      * 分页查询
@@ -79,6 +85,43 @@ public class ParticipantController {
     @DeleteMapping("/del/batch")
     public Result deleteBatch(@RequestBody List<Integer> ids) {
         return Result.success(participantService.removeByIds(ids));
+    }
+
+    /**
+     * 处理申请
+     * 分页查询所有申请
+     */
+    @GetMapping("/handle")
+    public Result showAllApplications(@RequestParam Integer pageNum,
+                                      @RequestParam Integer pageSize,
+                                      @RequestParam Integer activityId,
+                                      @RequestParam(defaultValue = "") String username) {
+        IPage<ParticipantApplications> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<ParticipantApplications> wrapper = new QueryWrapper<>();
+        wrapper.eq("activity_id", activityId);
+        wrapper.eq(Strings.isNotEmpty(username), "username", username);
+        wrapper.eq("state", "申请中");
+        return Result.success(participantAService.page(page, wrapper));
+    }
+
+    /**
+     * 处理申请
+     * 通过申请
+     */
+    @PostMapping("/handle/apply")
+    public Result applyApplication(@RequestBody ParticipantApplications participantApplication) {
+        return Result.success(participantAService.applyApplication(participantApplication));
+    }
+
+    /**
+     * 处理申请
+     * 拒绝申请
+     */
+    @PostMapping("/handle/reject")
+    public Result rejectApplication(@RequestBody ParticipantApplications participantApplication) {
+        participantApplication.setState("已拒绝");
+        participantAService.updateById(participantApplication);
+        return Result.success(participantApplication);
     }
 
 
