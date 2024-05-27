@@ -16,9 +16,12 @@ public class Result {
     private Object data;
 
 
-
     public static Result success() {
         return new Result(Constants.CODE_200, "", null);
+    }
+
+    public static Result success(String msg, Object data) {
+        return new Result(Constants.CODE_200, msg, data);
     }
 
     public static Result success(Object data) {
