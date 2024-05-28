@@ -47,8 +47,8 @@ const user = {
                         commit('SET_TOKEN', res.token);
                         resolve();*/
                         setToken("AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHH");
-                         commit('SET_TOKEN', "AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHH");
-                         resolve();
+                        commit('SET_TOKEN', "AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHH");
+                        resolve();
                     }
 
                 }).catch(error => {
