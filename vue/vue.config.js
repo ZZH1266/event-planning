@@ -9,24 +9,24 @@ const CompressionPlugin = require('compression-webpack-plugin')
 
 const name = process.env.VUE_APP_TITLE
 
-const port = process.env.port || process.env.npm_config_port || 80 // �˿�
+const port = process.env.port || process.env.npm_config_port || 80 // 端口
 
-// vue.config.js ����˵��
-//�ٷ�vue.config.js �ο��ĵ� https://cli.vuejs.org/zh/config/#css-loaderoptions
-// ����ֻ��һ���֣��������òο��ĵ�
+// vue.config.js 配置说明
+//官方vue.config.js 参考文档 https://cli.vuejs.org/zh/config/#css-loaderoptions
+// 这里只列一部分，具体配置参考文档
 module.exports = {
-  // �������������Ϳ��������µ�URL��
-  // Ĭ������£�Vue CLI ��������Ӧ���Ǳ�������һ�������ĸ�·����
+  // 部署生产环境和开发环境下的URL。
+  // 默认情况下，Vue CLI 会假设你的应用是被部署在一个域名的根路径上
   publicPath: process.env.NODE_ENV === "production" ? "/" : "/",
-  // ��npm run build �� yarn build ʱ �������ļ���Ŀ¼���ƣ�Ҫ��baseUrl����������·��һ�£���Ĭ��dist��
+  // 在npm run build 或 yarn build 时 ，生成文件的目录名称（要和baseUrl的生产环境路径一致）（默认dist）
   outputDir: 'dist',
-  // ���ڷ������ɵľ�̬��Դ (js��css��img��fonts) �ģ�����Ŀ���֮�󣬾�̬��Դ���������ļ����£�
+  // 用于放置生成的静态资源 (js、css、img、fonts) 的；（项目打包之后，静态资源会放在这个文件夹下）
   assetsDir: 'static',
-  // �Ƿ���eslint�����⣬��Чֵ��ture | false | 'error'
+  // 是否开启eslint保存检测，有效值：ture | false | 'error'
   lintOnSave: process.env.NODE_ENV === 'development',
-  // ����㲻��Ҫ���������� source map�����Խ�������Ϊ false �Լ�����������������
+  // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
   productionSourceMap: false,
-  // webpack-dev-server �������
+  // webpack-dev-server 相关配置
   devServer: {
     host: '0.0.0.0',
     port: port,
@@ -59,12 +59,12 @@ module.exports = {
     },
     plugins: [
       new CompressionPlugin({
-        cache: false,                                  // �������ļ�����
-        test: /\.(js|css|html|jpe?g|png|gif|svg)?$/i,  // ѹ���ļ���ʽ
-        filename: '[path][base].gz[query]',            // ѹ������ļ���
-        algorithm: 'gzip',                             // ʹ��gzipѹ��
-        minRatio: 0.8,                                 // ѹ��������С�� 80% ���ļ����ᱻѹ��
-        deleteOriginalAssets: false                    // ѹ����ɾ��ԭ�ļ�
+        cache: false,                                  // 不启用文件缓存
+        test: /\.(js|css|html|jpe?g|png|gif|svg)?$/i,  // 压缩文件格式
+        filename: '[path][base].gz[query]',            // 压缩后的文件名
+        algorithm: 'gzip',                             // 使用gzip压缩
+        minRatio: 0.8,                                 // 压缩比例，小于 80% 的文件不会被压缩
+        deleteOriginalAssets: false                    // 压缩后删除原文件
       })
     ],
   },
