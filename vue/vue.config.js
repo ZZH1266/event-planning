@@ -9,24 +9,24 @@ const CompressionPlugin = require('compression-webpack-plugin')
 
 const name = process.env.VUE_APP_TITLE
 
-const port = process.env.port || process.env.npm_config_port || 80 // ¶Ë¿Ú
+const port = process.env.port || process.env.npm_config_port || 80 // ï¿½Ë¿ï¿½
 
-// vue.config.js ÅäÖÃËµÃ÷
-//¹Ù·½vue.config.js ²Î¿¼ÎÄµµ https://cli.vuejs.org/zh/config/#css-loaderoptions
-// ÕâÀïÖ»ÁÐÒ»²¿·Ö£¬¾ßÌåÅäÖÃ²Î¿¼ÎÄµµ
+// vue.config.js ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½
+//ï¿½Ù·ï¿½vue.config.js ï¿½Î¿ï¿½ï¿½Äµï¿½ https://cli.vuejs.org/zh/config/#css-loaderoptions
+// ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã²Î¿ï¿½ï¿½Äµï¿½
 module.exports = {
-  // ²¿ÊðÉú²ú»·¾³ºÍ¿ª·¢»·¾³ÏÂµÄURL¡£
-  // Ä¬ÈÏÇé¿öÏÂ£¬Vue CLI »á¼ÙÉèÄãµÄÓ¦ÓÃÊÇ±»²¿ÊðÔÚÒ»¸öÓòÃûµÄ¸ùÂ·¾¶ÉÏ
+  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½URLï¿½ï¿½
+  // Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½Vue CLI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Ç±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½Â·ï¿½ï¿½ï¿½ï¿½
   publicPath: process.env.NODE_ENV === "production" ? "/" : "/",
-  // ÔÚnpm run build »ò yarn build Ê± £¬Éú³ÉÎÄ¼þµÄÄ¿Â¼Ãû³Æ£¨ÒªºÍbaseUrlµÄÉú²ú»·¾³Â·¾¶Ò»ÖÂ£©£¨Ä¬ÈÏdist£©
+  // ï¿½ï¿½npm run build ï¿½ï¿½ yarn build Ê± ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½Æ£ï¿½Òªï¿½ï¿½baseUrlï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½Ò»ï¿½Â£ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½distï¿½ï¿½
   outputDir: 'dist',
-  // ÓÃÓÚ·ÅÖÃÉú³ÉµÄ¾²Ì¬×ÊÔ´ (js¡¢css¡¢img¡¢fonts) µÄ£»£¨ÏîÄ¿´ò°üÖ®ºó£¬¾²Ì¬×ÊÔ´»á·ÅÔÚÕâ¸öÎÄ¼þ¼ÐÏÂ£©
+  // ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉµÄ¾ï¿½Ì¬ï¿½ï¿½Ô´ (jsï¿½ï¿½cssï¿½ï¿½imgï¿½ï¿½fonts) ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ö®ï¿½ó£¬¾ï¿½Ì¬ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Â£ï¿½
   assetsDir: 'static',
-  // ÊÇ·ñ¿ªÆôeslint±£´æ¼ì²â£¬ÓÐÐ§Öµ£ºture | false | 'error'
+  // ï¿½Ç·ï¿½ï¿½ï¿½eslintï¿½ï¿½ï¿½ï¿½ï¿½â£¬ï¿½ï¿½Ð§Öµï¿½ï¿½ture | false | 'error'
   lintOnSave: process.env.NODE_ENV === 'development',
-  // Èç¹ûÄã²»ÐèÒªÉú²ú»·¾³µÄ source map£¬¿ÉÒÔ½«ÆäÉèÖÃÎª false ÒÔ¼ÓËÙÉú²ú»·¾³¹¹½¨¡£
+  // ï¿½ï¿½ï¿½ï¿½ã²»ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ source mapï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª false ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   productionSourceMap: false,
-  // webpack-dev-server Ïà¹ØÅäÖÃ
+  // webpack-dev-server ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   devServer: {
     host: '0.0.0.0',
     port: port,
@@ -34,7 +34,7 @@ module.exports = {
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://localhost:8080`,
+        target: `http://localhost:9090`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
@@ -59,12 +59,12 @@ module.exports = {
     },
     plugins: [
       new CompressionPlugin({
-        cache: false,                                  // ²»ÆôÓÃÎÄ¼þ»º´æ
-        test: /\.(js|css|html|jpe?g|png|gif|svg)?$/i,  // Ñ¹ËõÎÄ¼þ¸ñÊ½
-        filename: '[path][base].gz[query]',            // Ñ¹ËõºóµÄÎÄ¼þÃû
-        algorithm: 'gzip',                             // Ê¹ÓÃgzipÑ¹Ëõ
-        minRatio: 0.8,                                 // Ñ¹Ëõ±ÈÀý£¬Ð¡ÓÚ 80% µÄÎÄ¼þ²»»á±»Ñ¹Ëõ
-        deleteOriginalAssets: false                    // Ñ¹ËõºóÉ¾³ýÔ­ÎÄ¼þ
+        cache: false,                                  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
+        test: /\.(js|css|html|jpe?g|png|gif|svg)?$/i,  // Ñ¹ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ê½
+        filename: '[path][base].gz[query]',            // Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+        algorithm: 'gzip',                             // Ê¹ï¿½ï¿½gzipÑ¹ï¿½ï¿½
+        minRatio: 0.8,                                 // Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ 80% ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½á±»Ñ¹ï¿½ï¿½
+        deleteOriginalAssets: false                    // Ñ¹ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½Ô­ï¿½Ä¼ï¿½
       })
     ],
   },
