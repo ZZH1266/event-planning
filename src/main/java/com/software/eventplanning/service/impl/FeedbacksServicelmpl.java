@@ -26,7 +26,7 @@ public class FeedbacksServicelmpl extends ServiceImpl<FeedbacksMapper,Feedbacks>
             BeanUtil.copyProperties(feedbacksDTO, one, true);
             save(one);
         } else {
-            throw new ServiceException(Constants.CODE_500, "系统错误");
+            throw new ServiceException(Constants.CODE_400, "不能重复提交活动反馈");
         }
         return one;
 
@@ -34,7 +34,7 @@ public class FeedbacksServicelmpl extends ServiceImpl<FeedbacksMapper,Feedbacks>
 
     private Feedbacks getFeedbackInfo(FeedbacksDTO feedbacksDTO){
         QueryWrapper<Feedbacks> queryWrapper=new QueryWrapper<>();
-
+        queryWrapper.eq("user_id",feedbacksDTO.getUserId());
         Feedbacks one;
         try {
             one = getOne(queryWrapper);

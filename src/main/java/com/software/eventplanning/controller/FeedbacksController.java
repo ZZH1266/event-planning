@@ -24,10 +24,8 @@ public class FeedbacksController {
     public Result submit(@RequestBody FeedbacksDTO feedbacksDTO) {
         Integer rating = feedbacksDTO.getRating();
         String context = feedbacksDTO.getContext();
-        Integer userId = feedbacksDTO.getUserId();
-        Integer activityId = feedbacksDTO.getActivityId();
         if (rating == null ||context == null) {
-            return Result.error(Constants.CODE_400,"参数错误");
+            return Result.error(Constants.CODE_400,"内容或者评分为空");
         }
         return Result.success(feedbacksService.submitted(feedbacksDTO));
     }
