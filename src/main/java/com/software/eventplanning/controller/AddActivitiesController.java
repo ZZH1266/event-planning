@@ -31,6 +31,7 @@ public class AddActivitiesController {
         String description= addActivitiesDTO.getDescription();
         Integer creatorId= addActivitiesDTO.getCreatorId();
         Integer templateId= addActivitiesDTO.getTemplateId();
+        //下面的参数可以为空
         Date startTime=addActivitiesDTO.getStartTime();
         Date endTime=addActivitiesDTO.getEndTime();
         Timestamp createdTime=addActivitiesDTO.getCreatedTime();
@@ -40,7 +41,6 @@ public class AddActivitiesController {
         {
             return Result.error(CODE_401,"缺少创建活动必须的信息");
         }
-
         //添加活动
         addActivitiesService.AddActivities(addActivitiesDTO);
 

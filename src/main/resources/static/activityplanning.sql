@@ -20,6 +20,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Table structure for activities
 -- ----------------------------
+use activityplanning;
 DROP TABLE IF EXISTS `activities`;
 CREATE TABLE `activities`  (
   `activity_id` int NOT NULL AUTO_INCREMENT,

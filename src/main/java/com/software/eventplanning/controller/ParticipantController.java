@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/participant")
-public class ParticipantController {
+public class   ParticipantController {
 
     @Resource
     private IParticipantService participantService;
