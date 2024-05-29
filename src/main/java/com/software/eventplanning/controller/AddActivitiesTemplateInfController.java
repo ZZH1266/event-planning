@@ -5,10 +5,8 @@ import com.software.eventplanning.common.Result;
 import com.software.eventplanning.controller.dto.ActivitiesTemplateDTO;
 import com.software.eventplanning.entity.Template;
 import com.software.eventplanning.service.IAddActivitiesTemplateInfService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -26,13 +24,14 @@ public class AddActivitiesTemplateInfController {
     {
         //开始检查输入是否正确
         Integer activityId= activitiesTemplateDTO.getActivityId();
-        Integer templateId= activitiesTemplateDTO.getTemplateID();
+        Integer templateId= activitiesTemplateDTO.getTemplateId();
         if(activityId==null || templateId==null)
         {
             return Result.error(CODE_403,"缺少活动ID或活动模板ID,系统异常");
         }
         Integer activitySize= activitiesTemplateDTO.getActivitySize();
         String placePlanToUse= activitiesTemplateDTO.getPlacePlanToUse();
+        Template template=new Template();
         if(templateId==1) //代表为户外运动
         {
             String sportsKind=activitiesTemplateDTO.getSportsKind();
@@ -41,7 +40,10 @@ public class AddActivitiesTemplateInfController {
             {
                 return Result.error(CODE_405,"缺少活动模板信息");
             }
-            addActivitiesTemplateInfService.AddActivitiesTemplateInf(activitiesTemplateDTO);
+            activitiesTemplateDTO.setIndoorKind(null);
+            activitiesTemplateDTO.setHostName(null);
+            activitiesTemplateDTO.setTeacherName(null);
+            template=addActivitiesTemplateInfService.AddActivitiesTemplateInf(activitiesTemplateDTO);
 
         }
         else if(templateId==2) //代表室内运动
@@ -53,9 +55,11 @@ public class AddActivitiesTemplateInfController {
             {
                 return Result.error(CODE_405,"缺少活动模板信息");
             }
-            addActivitiesTemplateInfService.AddActivitiesTemplateInf(activitiesTemplateDTO);
+            activitiesTemplateDTO.setSportsKind(null);
+            activitiesTemplateDTO.setSafetyOfficerName(null);
+            template=addActivitiesTemplateInfService.AddActivitiesTemplateInf(activitiesTemplateDTO);
         }
 
-        return Result.success();
+        return Result.success("成功插入活动模板信息",template);
     }
 }
