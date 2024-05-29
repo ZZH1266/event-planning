@@ -3,6 +3,7 @@ package com.software.eventplanning.controller;
 import cn.hutool.core.util.StrUtil;
 import com.software.eventplanning.common.Result;
 import com.software.eventplanning.controller.dto.AddActivitiesDTO;
+import com.software.eventplanning.entity.Activities;
 import com.software.eventplanning.service.IAddActivitiesService;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.ibatis.jdbc.Null;
@@ -41,9 +42,10 @@ public class AddActivitiesController {
         {
             return Result.error(CODE_401,"缺少创建活动必须的信息");
         }
+        Activities activities=new Activities();
         //添加活动
-        addActivitiesService.AddActivities(addActivitiesDTO);
+        activities=addActivitiesService.AddActivities(addActivitiesDTO);
 
-        return Result.success(addActivitiesDTO); //返回正确信息
+        return Result.success("成功创建活动",activities); //返回正确信息
     }
 }

@@ -4,14 +4,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
-
 @Data
 @Getter
 @Setter
 public class ActivitiesTemplateDTO {
     Integer activityId; //活动ID
-    Integer templateID; //模板ID
+    Integer templateId; //模板ID
     Integer activitySize;
     String placePlanToUse;
     //以下为户外运动

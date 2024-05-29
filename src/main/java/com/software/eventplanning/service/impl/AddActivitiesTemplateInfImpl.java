@@ -31,6 +31,7 @@ public class AddActivitiesTemplateInfImpl extends ServiceImpl<ActivitiesTemplate
             System.out.println(template);
         } catch (Exception e)
         {
+            LOG.error(e);
             //查询数据库出现错误
             throw new ServiceException(CODE_500,"系统错误");
         }
