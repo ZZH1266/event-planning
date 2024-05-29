@@ -50,7 +50,7 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
 
         Resources one = getResourceById(resourcesDTO,resourceId);
         if (one == null) {
-            throw new ServiceException(-1, "用户不存在");
+            throw new ServiceException(-1, "资源不存在");
         } else {
             one.setDescription(resourcesDTO.getDescription());
             one.setResourceType(resourcesDTO.getResourceType());
