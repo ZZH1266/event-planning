@@ -30,7 +30,7 @@ public class ResourcesController {
         else return Result.error(Constants.CODE_400,"资源类型为空或者不对");
     }
 
-    @PostMapping("update")
+    @PostMapping("/update")
     @ResponseBody
     public Result updateResource(@RequestBody ResourcesDTO resourcesDTO,@RequestParam Integer resourceId) {
         String resourcename = resourcesDTO.getResourceName();
@@ -42,5 +42,27 @@ public class ResourcesController {
             return Result.success(resourcesService.update(resourcesDTO,resourceId));
         }
         else return Result.error(Constants.CODE_400,"资源类型为空或者不对");
+    }
+
+    @DeleteMapping("/delete")
+    @ResponseBody
+    public Result deleteResource(@RequestParam Integer resourceId) {
+        if(resourceId==null){
+            return Result.error(Constants.CODE_400,"请选择需要删除的资源");
+        }
+        if(resourcesService.delete(resourceId)){
+        return Result.success("删除资源成功",null);
+    }
+        else return Result.error(400,"删除资源失败");
+    }
+
+    @GetMapping("/getdetail")
+    @ResponseBody
+    public Result getResourceDetail(@RequestParam Integer resourceId) {
+        Resources resources=resourcesService.getresourceById(resourceId);
+        if(resources==null){
+            return Result.error(400,"查找的资源不存在");
+        }
+        else return Result.success(resources);
     }
 }

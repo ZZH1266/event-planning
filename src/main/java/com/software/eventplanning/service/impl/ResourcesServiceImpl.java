@@ -62,6 +62,8 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
 
     }
 
+
+
     private Resources getResourceById(ResourcesDTO resourcesDTO,Integer resourceId) {
         QueryWrapper<Resources> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("resource_id",resourceId);
@@ -71,6 +73,25 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
         }catch (Exception e){
             LOG.error(e);
             throw new ServiceException(Constants.CODE_500,"系统错误");
+        }
+        return one;
+    }
+
+    @Override
+    public Boolean delete(Integer resourceId) {
+        return removeById(resourceId);
+    }
+
+    @Override
+    public Resources getresourceById(Integer resourceId) {
+        QueryWrapper<Resources> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("resource_id", resourceId);
+        Resources one;
+        try{
+            one = getOne(queryWrapper);
+        }catch (Exception e){
+            LOG.error(e);
+            throw new ServiceException(500,"系统错误");
         }
         return one;
     }

@@ -8,4 +8,8 @@ public interface IResourcesService {
     Resources add(ResourcesDTO resourcesDTO);
 
     Resources update(ResourcesDTO resourcesDTO,Integer resourcesId);
+
+    Boolean delete(Integer resourceId);
+
+    Resources getresourceById(Integer resourceId);
 }
