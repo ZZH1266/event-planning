@@ -73,7 +73,7 @@ export const constantRoutes = [
         meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
-  }
+  },
 ]
 
 // 动态路由，基于用户权限动态去加载

@@ -33,15 +33,15 @@
         <el-input
           v-model="registerForm.code"
           auto-complete="off"
-          placeholder="验证码"
+          placeholder="请填入邮箱验证码"
           style="width: 63%"
           @keyup.enter.native="handleRegister"
         >
           <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
         </el-input>
-        <div class="register-code">
+       <!-- <div class="register-code">
           <img :src="codeUrl" @click="getCode" class="register-code-img"/>
-        </div>
+        </div>-->
       </el-form-item>
       <el-form-item style="width:100%;">
         <el-button
