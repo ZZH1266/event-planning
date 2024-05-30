@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @ToString
-@TableName
+@TableName(value = "expense_claims")
 
 /* 以下是报销申请的字段 */
 
@@ -34,9 +34,6 @@ public class ExpenseClaim {
     private Status status;
     @TableField(value = "submitted_at")
     private Timestamp submittedTime;
-    @TableField(value = "reviewed_at")
-    private Timestamp reviewedTime;
-    @TableField(value = "reviewed_by")
-    private Integer createrId;
+
 
 }
