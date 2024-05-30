@@ -13,8 +13,8 @@ import java.util.List;
 @Mapper
 public interface BookingsMapper extends BaseMapper<Bookings> {
     @Select("select * from resource_allocations where resource_id = #{resourceId} " +
-            "and ((start_time <  #{startTime} and #{startTime} < end_time)" +
-            "or (start_time < #{endTime} and #{endTime} < end_time) " +
+            "and ((start_time <  #{startTime} and #{startTime} <= end_time)" +
+            "or (start_time <= #{endTime} and #{endTime} < end_time) " +
             "or (#{startTime} < start_time and #{endTime} > end_time))")
     List<Allocations> findCollisionInAllocation(@Param("resourceId") int resourceId, @Param("startTime") DateTime startTime, @Param("endTime") DateTime endTime);
 }

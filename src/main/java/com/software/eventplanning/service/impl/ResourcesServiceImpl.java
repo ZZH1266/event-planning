@@ -11,13 +11,15 @@ import com.software.eventplanning.entity.Users;
 import com.software.eventplanning.exception.ServiceException;
 import com.software.eventplanning.mapper.ResourcesMapper;
 import com.software.eventplanning.service.IResourcesService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources> implements IResourcesService {
 
     private static final Log LOG = Log.get();
-
+    @Autowired
+    private ResourcesMapper rm;
     @Override
     public Resources add(ResourcesDTO resourcesDTO) {
 
@@ -79,6 +81,8 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
 
     @Override
     public Boolean delete(Integer resourceId) {
+        rm.deleteResourceBookingsByResourceId(resourceId) ;
+        rm.deleteResourceAllocationsByResourceId(resourceId);
         return removeById(resourceId);
     }
 
