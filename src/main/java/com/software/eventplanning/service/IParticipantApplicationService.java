@@ -1,7 +1,6 @@
 package com.software.eventplanning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.software.eventplanning.controller.dto.ParticipantsDTO;
 import com.software.eventplanning.entity.ParticipantApplications;
 
 public interface IParticipantApplicationService extends IService<ParticipantApplications> {

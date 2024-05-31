@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.software.eventplanning.common.Constants;
 import com.software.eventplanning.controller.dto.ExpenseClaimDTO;
 import com.software.eventplanning.entity.ExpenseClaim;
-import com.software.eventplanning.entity.Users;
 import com.software.eventplanning.mapper.ExpenseClaimMapper;
 import com.software.eventplanning.exception.ServiceException;
 import com.software.eventplanning.service.IExpenseClaimService;
