@@ -22,6 +22,7 @@ public interface Constants {
     Integer CODE_503=503; //场地申请表单中有空项
     Integer CODE_504=504; //申请与分配表中记录冲突，申请驳回
     Integer CODE_505=505;//申请的开始时间大于结束时间
+    Integer CODE_506=506;//没有空闲且没有被申请的场地，无法分配
 
     Integer CODE_600 = 600;
     Integer CODE_601 = 601;

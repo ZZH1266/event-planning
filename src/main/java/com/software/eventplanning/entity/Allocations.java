@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Data
@@ -16,8 +17,10 @@ public class Allocations {
     Integer allocationId;
     @TableField(value="resource_id")
     Integer resourceId;
+    @TableField(value="resource_name")
+    String resourceName;
     @TableField(value="start_time")
-    String startTime;
+    String  startTime;
     @TableField(value="end_time")
     String endTime;
     @TableField(value="allocated_at")

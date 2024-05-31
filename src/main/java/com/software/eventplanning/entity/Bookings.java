@@ -19,6 +19,8 @@ public class Bookings {
     Integer bookingId;
     @TableField(value = "resource_id")
     Integer resourceId;
+    @TableField(value = "resource_name")
+    String resourceName;
     @TableField(value = "activity_id")
     Integer activityId;
     @TableField(value="booked_by")
@@ -27,6 +29,8 @@ public class Bookings {
     DateTime startTime;
     @TableField(value = "end_time")
     DateTime endTime;
+    @TableField(value="status")
+    String status;
     @TableField(value="created_at")
     Timestamp createdTime;
 

@@ -43,10 +43,24 @@ public class ResourceBookingController {
         }
         else
         {
-            //分配表没有冲突，将申请加入申请表
+            if(rb.collisionDetectionWithBookings(bookingsDTO))
+            {
+                //与申请表产生冲突,则进行分配，如果分配成功则改变申请的场地ID，将改变后的申请记录插入申请表
+                //查询空闲的场地
+                Integer freeResourceId=rb.findFreeResourceId(bookingsDTO);
+                if(freeResourceId==-1)
+                {
+                    return Result.error(CODE_506,"没有空闲场地，无法申请");
+                }
+                else
+                {
+                    bookingsDTO.setResourceId(freeResourceId); //改变申请的场地ID
+                }
+            }
+
+            //将申请加入申请表
             Bookings bookings=rb.addBooking(bookingsDTO);
             return Result.success("成功插入申请记录",bookings);
         }
-
     }
 }
