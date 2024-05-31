@@ -7,11 +7,12 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.websocket.server.PathParam;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
@@ -79,6 +80,37 @@ public class WebSocketController {
         }
         SocketServer.SendMany(username, msg, list);
         return Result.success("推送成功", null);
+    }
+
+    /**
+     * 推送文件给同一活动的所有用户
+     */
+    @PostMapping("sendFileToActivity")
+    @ResponseBody
+    public Result sendFileToActivity(@RequestParam("username") String username,
+                                     @RequestParam("file") MultipartFile file,
+                                     @RequestParam("activityId") Integer activityId) {
+        boolean hasUser = participantsMapper.hasUser(activityId, username);
+        if (!hasUser) {
+            return Result.error(-1, "用户不是该活动参与者");
+        }
+
+        List<String> userList = participantsMapper.selectUserNameByActivityId(activityId);
+        if (userList.isEmpty()) {
+            return Result.error(-1, "活动中没有用户");
+        }
+
+        if (file.isEmpty()) {
+            return Result.error(-1, "文件是空");
+        }
+
+        try {
+            ByteBuffer byteBuffer = ByteBuffer.wrap(file.getBytes());
+            SocketServer.sendBinaryMessageToMany(byteBuffer, userList);
+            return Result.success("文件发送成功");
+        } catch (IOException e) {
+            return Result.error(-1, "发送文件失败: " + e.getMessage());
+        }
     }
 
 }
