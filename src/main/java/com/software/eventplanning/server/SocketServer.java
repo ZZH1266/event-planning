@@ -225,4 +225,17 @@ public class SocketServer {
                     }
                 });
     }
+
+    public static synchronized void sendPrivateMessage(String fromUsername, String message, String toUsername) {
+        socketServers.stream()
+                .filter(client -> toUsername.equals(client.getUserName()))
+                .forEach(client -> {
+                    try {
+                        client.getSession().getBasicRemote().sendText(fromUsername + ":" + message);
+                        logger.info("Server sent private message from [{}] to [{}]: {}", fromUsername, toUsername, message);
+                    } catch (IOException e) {
+                        logger.error("Failed to send private message to client: [{}]", toUsername, e);
+                    }
+                });
+    }
 }

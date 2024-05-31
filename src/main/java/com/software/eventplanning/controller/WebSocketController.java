@@ -30,30 +30,6 @@ public class WebSocketController {
     private ParticipantsMapper participantsMapper;
 
     /**
-     * 客户端页面
-     * @return
-     */
-    @RequestMapping(value = "/index")
-    public String index() {
-        return "index";
-    }
-
-    /**
-     * 服务端页面
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "/admin")
-    public String admin(Model model) {
-        int num = socketServer.getOnlineNum();
-        List<String> list = socketServer.getOnlineUsers();
-
-        model.addAttribute("num", num);
-        model.addAttribute("users", list);
-        return "admin";
-    }
-
-    /**
      * 推送给所有在线用户
      * @return
      */
@@ -111,6 +87,19 @@ public class WebSocketController {
         } catch (IOException e) {
             return Result.error(-1, "发送文件失败: " + e.getMessage());
         }
+    }
+
+    /**
+     * 推送给指定用户
+     * @return
+     */
+    @PostMapping("sendPrivateMessage")
+    @ResponseBody
+    public Result sendPrivateMessage(@RequestParam("fromUsername") String fromUsername,
+                                     @RequestParam("toUsername") String toUsername,
+                                     @RequestParam("message") String message) {
+        SocketServer.sendPrivateMessage(fromUsername, message, toUsername);
+        return Result.success("发送成功");
     }
 
 }
