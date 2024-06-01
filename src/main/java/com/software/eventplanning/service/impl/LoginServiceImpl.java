@@ -18,12 +18,12 @@ public class LoginServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     private static final Log LOG = Log.get();
 
     @Override
-    public LoginDTO login(LoginDTO loginDTO) {
+    public Users login(LoginDTO loginDTO) {
         System.out.println("loginDTO: " + loginDTO);
         Users one = getUserInfo(loginDTO);
         if (one != null) {
             BeanUtil.copyProperties(one, loginDTO, true);
-            return loginDTO;
+            return one;
         } else {
             throw new ServiceException(Constants.CODE_600, "用户名或密码错误");
         }

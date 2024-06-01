@@ -6,11 +6,12 @@ import com.software.eventplanning.server.SocketServer;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 
 @Controller
+@RequestMapping("/chatroom")
 public class WebSocketController {
 
     @Autowired
@@ -101,5 +103,28 @@ public class WebSocketController {
         SocketServer.sendPrivateMessage(fromUsername, message, toUsername);
         return Result.success("发送成功");
     }
+
+    /**
+     * 推送文件给指定用户
+     */
+    @PostMapping("sendPrivateFile")
+    @ResponseBody
+    public Result sendPrivateFile(@RequestParam("fromUsername") String fromUsername,
+                                  @RequestParam("toUsername") String toUsername,
+                                  @RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return Result.error(-1, "文件是空");
+        }
+
+        try {
+            ByteBuffer byteBuffer = ByteBuffer.wrap(file.getBytes());
+            SocketServer.sendPrivateBinaryMessage(fromUsername, byteBuffer, toUsername);
+            return Result.success("文件发送成功");
+        } catch (IOException e) {
+            return Result.error(-1, "发送文件失败: " + e.getMessage());
+        }
+}
+
+
 
 }

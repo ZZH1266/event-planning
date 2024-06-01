@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/participant")
+@RequestMapping("/activity/participant")
 public class   ParticipantController {
 
     @Resource
@@ -36,7 +36,7 @@ public class   ParticipantController {
      * @param role       根据角色查询
      * @return           返回参与者的信息、total：总共的页数、current：当前页数等数据
      */
-    @GetMapping("/page")
+    @GetMapping
     public Result findPage(@RequestParam Integer pageNum,
                            @RequestParam Integer pageSize,
                            @RequestParam Integer activityId,

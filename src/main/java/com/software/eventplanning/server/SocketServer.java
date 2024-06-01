@@ -1,10 +1,8 @@
 package com.software.eventplanning.server;
 
 import com.software.eventplanning.entity.Client;
-import com.software.eventplanning.mapper.ParticipantsMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -235,6 +233,19 @@ public class SocketServer {
                         logger.info("Server sent private message from [{}] to [{}]: {}", fromUsername, toUsername, message);
                     } catch (IOException e) {
                         logger.error("Failed to send private message to client: [{}]", toUsername, e);
+                    }
+                });
+    }
+
+    public static synchronized void sendPrivateBinaryMessage(String fromUsername, ByteBuffer message, String toUsername) {
+        socketServers.stream()
+                .filter(client -> toUsername.equals(client.getUserName()))
+                .forEach(client -> {
+                    try {
+                        client.getSession().getBasicRemote().sendBinary(message);
+                        logger.info("Server sent private binary message from [{}] to [{}]", fromUsername, toUsername);
+                    } catch (IOException e) {
+                        logger.error("Failed to send private binary message to client: [{}]", toUsername, e);
                     }
                 });
     }
