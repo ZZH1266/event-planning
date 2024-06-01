@@ -19,4 +19,7 @@ public interface ParticipantsMapper extends BaseMapper<Participants> {
 
     @Select("select activity_id from participants where user_id = #{userId}")
     List<Integer> selectActivityIdsByUserId(@Param(value = "userId") Integer userId);
+
+    @Select("select activity_id from participants where user_id = #{userId} and role != '组织者'")
+    List<Integer> selectJoinedActivityIdsByUserId(@Param(value = "userId") Integer userId);
 }
