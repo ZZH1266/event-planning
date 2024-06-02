@@ -7,6 +7,7 @@ import com.software.eventplanning.common.Result;
 import com.software.eventplanning.controller.dto.ParticipantsDTO;
 import com.software.eventplanning.entity.ParticipantApplications;
 import com.software.eventplanning.entity.Participants;
+import com.software.eventplanning.service.IActivitiesService;
 import com.software.eventplanning.service.IParticipantApplicationService;
 import com.software.eventplanning.service.IParticipantService;
 import org.apache.logging.log4j.util.Strings;
@@ -27,6 +28,8 @@ public class   ParticipantController {
     @Autowired
     private IParticipantApplicationService participantAService;
 
+    @Autowired
+    private IActivitiesService  activitiesService;
     /**
      * 分页查询
      *
@@ -123,6 +126,14 @@ public class   ParticipantController {
         participantAService.updateById(participantApplication);
         return Result.success(participantApplication);
     }
-
+    /**
+     * 活动参与者追踪活动进度
+     */
+    @GetMapping("/statustrack")
+    @ResponseBody
+    public Result r(@RequestParam Integer activityId) {
+       String status=activitiesService.getactivitystatusbyid(activityId);
+       return Result.success(status);
+    }
 
 }
