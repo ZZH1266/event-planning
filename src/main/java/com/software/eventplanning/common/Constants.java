@@ -23,6 +23,10 @@ public interface Constants {
     Integer CODE_504=504; //申请与分配表中记录冲突，申请驳回
     Integer CODE_505=505;//申请的开始时间大于结束时间
     Integer CODE_506=506;//没有空闲且没有被申请的场地，无法分配
+    Integer CODE_507=507;//申请场地的开始时间早于目前的时间
+    Integer CODE_508=508;//预约场地的时间必须大于1个小时
+    Integer CODE_509=509;//预约时间不能跨天预约
+    Integer CODE_510=510;//预约时间只能在早上8点到夜晚10点
 
     Integer CODE_600 = 600;
     Integer CODE_601 = 601;
