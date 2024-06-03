@@ -77,8 +77,8 @@
             return {
                 codeUrl: "",
                 loginForm: {
-                    username: "admin",
-                    password: "admin123",
+                    username: "zzh1",
+                    password: "111",
                     rememberMe: false,
                     code: "",
                     uuid: ""

@@ -93,6 +93,18 @@ const permission = {
                                             "noCache": false,
                                             "link": null
                                         }
+                                    },
+                                    {
+                                        "name": "Template",
+                                        "path": "template",
+                                        "hidden": false,
+                                        "component": "system/template/index",
+                                        "meta": {
+                                            "title": "模板管理",
+                                            "icon": "user",
+                                            "noCache": false,
+                                            "link": null
+                                        }
                                     }
                                 ]
                             }

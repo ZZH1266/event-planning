@@ -42,13 +42,14 @@ const user = {
             return new Promise((resolve, reject) => {
                 login(username, password, code, uuid).then(res => {
                     if (res.code === 200) {
-                        /*setToken(res.token);
-                        commit('SET_TOKEN', res.token);
-                        resolve();*/
-                        commit('SET_ID', res.data.id);
+                        console.log('login res:', res.data);
+                        setToken(res.data);
+                        commit('SET_TOKEN', res.data);
+                        resolve();
+                        /*commit('SET_ID', res.data.id);
                         setToken("AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHH");
-                         commit('SET_TOKEN', "AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHH");
-                         resolve();
+                        commit('SET_TOKEN', "AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHH");
+                        resolve();*/
                     }
 
                 }).catch(error => {
@@ -63,7 +64,7 @@ const user = {
             return new Promise((resolve, reject) => {
                 //getInfo().then(res => {
                 var res={};
-                if (state.id >= 2) {//user
+                if (state.id > 2) {//user
                     res = {
                         "msg": "操作成功",
                         "code": 200,
