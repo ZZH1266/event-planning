@@ -31,9 +31,21 @@ public class BackgroundUserServiceImpl extends ServiceImpl<BackgroundUserMapper,
         IPage<Users> iPage=backgroundUserMapper.selectPage(page,queryWrapper);
         return iPage;
     }
+
+    @Override
+    public IPage<Users> findAllAdmins(int current,int size) //分页查询所有管理员
+    {
+        QueryWrapper<Users>queryWrapper=new QueryWrapper<>();
+        queryWrapper
+                .orderByAsc("user_id")
+                .and(Wrapper->Wrapper.eq("role",1).or().eq("role",2));
+        Page<Users> page=new Page<>(current,size);
+        IPage<Users> iPage=backgroundUserMapper.selectPage(page,queryWrapper);
+        return iPage;
+    }
     //更改某一个用户的权限
     @Override
-    public Result changeUserRole(int userId,int role)
+    public Result changeUserRole(int myId,int userId,int role)
     {
         //查询是否有该用户
         QueryWrapper queryWrapper=new QueryWrapper<>();
@@ -43,10 +55,6 @@ public class BackgroundUserServiceImpl extends ServiceImpl<BackgroundUserMapper,
         if(user==null)
         {
             return Result.error(CODE_531,"该用户不存在");
-        }
-        if(user.getRole()==1)
-        {
-            return Result.error(CODE_536,"无法调整其他管理员的权限");
         }
         user.setRole(role); //改变权限
         user.setUpdatedTime(Timestamp.valueOf(LocalDateTime.now()));//更改记录中的最近修改时间

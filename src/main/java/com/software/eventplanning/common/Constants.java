@@ -33,7 +33,7 @@ public interface Constants {
     Integer CODE_531=531;//要操作的用户不存在
     Integer CODE_532=532;//修改权限操作失败
     Integer CODE_533=533;//管理员识别错误
-    Integer CODE_534=534;//修改权限不足
+    Integer CODE_534=534;//权限不足
     Integer CODE_535=535;//管理员无法修改自身权限
     Integer CODE_536=536;//无法调整其他管理员的权限
 

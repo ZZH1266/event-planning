@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.software.eventplanning.common.Result;
 import com.software.eventplanning.controller.dto.BackgroundUserChangeRoleDTO;
+import com.software.eventplanning.controller.dto.BackgroundUserFindAllAdminsDTO;
 import com.software.eventplanning.controller.dto.BackgroundUserFindAllUsersDTO;
 import com.software.eventplanning.entity.Users;
+import com.software.eventplanning.exception.ServiceException;
 import com.software.eventplanning.service.IBackgroundUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,10 +28,29 @@ public class BackgroundUserController {
     @PostMapping("/background/user/findAllUsers")
     public IPage<Users> findAllUsers(@RequestBody BackgroundUserFindAllUsersDTO backgroundUserFindAllUsersDTO)
     {
+        if(iBackgroundUserService.getUserRole(backgroundUserFindAllUsersDTO.getMyId())==0)
+        {
+            throw new ServiceException(CODE_534,"权限不足");
+        }
         int current= backgroundUserFindAllUsersDTO.getCurrent(); //当前查询的页数
         int size= backgroundUserFindAllUsersDTO.getSize(); //每页显示的记录数
         IPage<Users> iPage=iBackgroundUserService.findAllUsers(current,size);
         return iPage;
+    }
+    @PostMapping("/background/user/findAllAdmins")  //查询所有管理员和超级管理员的信息
+    public IPage<Users> findAllAdmins(@RequestBody BackgroundUserFindAllAdminsDTO backgroundUserFindAllAdminsDTO)
+    {
+        if(iBackgroundUserService.getUserRole(backgroundUserFindAllAdminsDTO.getMyId())==2)
+        {
+            int current=backgroundUserFindAllAdminsDTO.getCurrent();
+            int size= backgroundUserFindAllAdminsDTO.getSize();
+            IPage<Users> iPage=iBackgroundUserService.findAllAdmins(current,size);
+            return iPage;
+        }
+        else {
+            throw new ServiceException(CODE_534,"权限不足");
+        }
+
     }
 
     //改变用户权限
@@ -41,7 +62,7 @@ public class BackgroundUserController {
         {
             return Result.error(CODE_533,"请确认您是否正确登陆");
         }
-        if(iBackgroundUserService.getUserRole(myId)==0)
+        if(iBackgroundUserService.getUserRole(myId)!=2)
         {
             return Result.error(CODE_534,"您无权进行修改");
         }
@@ -55,7 +76,7 @@ public class BackgroundUserController {
         {
             return Result.error(CODE_535,"您无法修改您自身的权限");
         }
-        Result result=iBackgroundUserService.changeUserRole(userId,role);
+        Result result=iBackgroundUserService.changeUserRole(myId,userId,role);
         return result;
     }
 }
