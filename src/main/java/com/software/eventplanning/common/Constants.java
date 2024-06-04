@@ -35,6 +35,7 @@ public interface Constants {
     Integer CODE_533=533;//管理员识别错误
     Integer CODE_534=534;//修改权限不足
     Integer CODE_535=535;//管理员无法修改自身权限
+    Integer CODE_536=536;//无法调整其他管理员的权限
 
     Integer CODE_600 = 600;
     Integer CODE_601 = 601;

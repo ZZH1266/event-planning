@@ -1,7 +1,11 @@
 package com.software.eventplanning.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.software.eventplanning.common.Result;
 import com.software.eventplanning.controller.dto.BackgroundUserChangeRoleDTO;
+import com.software.eventplanning.controller.dto.BackgroundUserFindAllUsersDTO;
 import com.software.eventplanning.entity.Users;
 import com.software.eventplanning.service.IBackgroundUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,16 @@ import static com.software.eventplanning.common.Constants.*;
 public class BackgroundUserController {
     @Resource
     public IBackgroundUserService iBackgroundUserService;
+    //分页查询所有用户信息
+    @PostMapping("/background/user/findAllUsers")
+    public IPage<Users> findAllUsers(@RequestBody BackgroundUserFindAllUsersDTO backgroundUserFindAllUsersDTO)
+    {
+        int current= backgroundUserFindAllUsersDTO.getCurrent(); //当前查询的页数
+        int size= backgroundUserFindAllUsersDTO.getSize(); //每页显示的记录数
+        IPage<Users> iPage=iBackgroundUserService.findAllUsers(current,size);
+        return iPage;
+    }
+
     //改变用户权限
     @PostMapping("/background/user/changeRole")
     public Result changeRole(@RequestBody BackgroundUserChangeRoleDTO backgroundUserChangeRoleDTO) //userId为要修改的用户 role为修改为的角色(0为普通用户，1为系统管理员)
