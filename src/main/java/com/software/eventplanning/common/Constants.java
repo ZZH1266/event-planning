@@ -28,6 +28,14 @@ public interface Constants {
     Integer CODE_509=509;//预约时间不能跨天预约
     Integer CODE_510=510;//预约时间只能在早上8点到夜晚10点
 
+    //此后为后台管理的错误
+    Integer CODE_530=530;//后台管理员输入的用户ID不合法
+    Integer CODE_531=531;//要操作的用户不存在
+    Integer CODE_532=532;//修改权限操作失败
+    Integer CODE_533=533;//管理员识别错误
+    Integer CODE_534=534;//修改权限不足
+    Integer CODE_535=535;//管理员无法修改自身权限
+
     Integer CODE_600 = 600;
     Integer CODE_601 = 601;
     Integer CODE_602 = 602;
