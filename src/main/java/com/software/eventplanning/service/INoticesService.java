@@ -17,4 +17,8 @@ public interface INoticesService extends IService<Notices> {
     NoticeReceptions receivenotice(NoticesReceptionsDTO noticesReceptionsDTO);
 
     NoticesInfo getnoticesInfoByLogId(Integer logId);
+
+    List<Notices> getnoticesByUserId(Integer userId);
+
+    List<NoticeReceptions> getreceptionsByUserId(Integer userId);
 }

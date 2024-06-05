@@ -22,4 +22,13 @@ public interface NoticesMapper extends BaseMapper<Notices> {
 
     @Select("select a.*,t.* from notification_logs As a join notification_templates As t On a.template_id=t.template_id where a.log_id=#{logId}")
     NoticesInfo getnoticesInfoByLogId(Integer logId);
+
+    @Select("select * from notification_logs where sent_by=#{userId}")
+    List<Notices> getnoticesByUserId(Integer userId);
+
+    @Select("SELECT nr.*\n" +
+            "FROM notification_receptions nr\n" +
+            "JOIN notification_logs nl ON nr.log_id = nl.log_id\n" +
+            "WHERE nl.sent_by =#{userId} ")
+    List<NoticeReceptions> getreceptionsByUserId(Integer userId);
 }

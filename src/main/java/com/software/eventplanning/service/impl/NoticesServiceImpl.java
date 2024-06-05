@@ -58,4 +58,16 @@ public class NoticesServiceImpl extends ServiceImpl<NoticesMapper, Notices> impl
         NoticesInfo noticesInfo=noticesMapper.getnoticesInfoByLogId(logId);
         return noticesInfo;
     }
+
+    @Override
+    public List<Notices> getnoticesByUserId(Integer userId){
+        List<Notices> notices=noticesMapper.getnoticesByUserId(userId);
+        return notices;
+    }
+
+    @Override
+    public List<NoticeReceptions> getreceptionsByUserId(Integer userId){
+        List<NoticeReceptions> noticesReceptions=noticesMapper.getreceptionsByUserId(userId);
+        return noticesReceptions;
+    }
 }

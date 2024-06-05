@@ -9,7 +9,9 @@ import com.software.eventplanning.service.INoticesService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/notices")
@@ -46,5 +48,16 @@ public class NoticesController {
     @ResponseBody
     public Result viewNotice(@RequestParam Integer logId) {
         return Result.success(noticesService.getnoticesInfoByLogId(logId));
+    }
+
+    @GetMapping("/noticescount")
+    @ResponseBody
+    public Result noticescount(@RequestParam Integer userId) {
+        Integer sendcount=noticesService.getnoticesByUserId(userId).size();
+        Integer receivecount=noticesService.getreceptionsByUserId(userId).size();
+        Map<String,Integer> map=new HashMap<>();
+        map.put("已发送",sendcount);
+        map.put("已接收",receivecount);
+        return Result.success(map);
     }
 }
