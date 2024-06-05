@@ -7,4 +7,5 @@ import com.software.eventplanning.entity.Activities;
 public interface IActivitiesService extends IService<Activities> {
     Activities updatestatus(ActivityStatusDTO activityStatusDTO);
     String  getactivitystatusbyid(Integer activityId);
+    Activities getactivitiesbyid(Integer activityId);
 }

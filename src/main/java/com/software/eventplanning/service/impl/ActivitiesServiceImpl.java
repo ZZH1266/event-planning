@@ -42,4 +42,16 @@ public class ActivitiesServiceImpl extends ServiceImpl<ActivitiesMapper, Activit
             throw new ServiceException(Constants.CODE_400,"该活动不存在");
         }
     }
+
+    @Override
+    public Activities getactivitiesbyid(Integer activityId){
+        QueryWrapper<Activities> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("activity_id",activityId);
+        Activities one=this.getOne(queryWrapper);
+        if(one!=null){
+            return one;
+        }else{
+            throw new ServiceException(Constants.CODE_400,"该活动不存在");
+        }
+    }
 }
