@@ -9,6 +9,7 @@ import com.software.eventplanning.controller.dto.NoticesDTO;
 import com.software.eventplanning.controller.dto.NoticesReceptionsDTO;
 import com.software.eventplanning.entity.NoticeReceptions;
 import com.software.eventplanning.entity.Notices;
+import com.software.eventplanning.entity.NoticesInfo;
 import com.software.eventplanning.entity.Resources;
 import com.software.eventplanning.mapper.NoticesMapper;
 import com.software.eventplanning.service.INoticesService;
@@ -39,9 +40,9 @@ public class NoticesServiceImpl extends ServiceImpl<NoticesMapper, Notices> impl
     }
 
     @Override
-    public List<Notices> getnoticesByUserId(Integer userId){
-        List<Notices> notices=noticesMapper.selectAllbyUserId(userId);
-        return notices;
+    public List<NoticesInfo> getnoticesInfoByUserId(Integer userId){
+        List<NoticesInfo> noticesinfo=noticesMapper.getnoticesInfoByUserId(userId);
+        return noticesinfo;
     }
 
     @Override
@@ -50,5 +51,11 @@ public class NoticesServiceImpl extends ServiceImpl<NoticesMapper, Notices> impl
         BeanUtil.copyProperties(noticesReceptionsDTO, one, true);
         noticesMapper.addReception(one);
          return one;
+    }
+
+    @Override
+    public NoticesInfo getnoticesInfoByLogId(Integer logId){
+        NoticesInfo noticesInfo=noticesMapper.getnoticesInfoByLogId(logId);
+        return noticesInfo;
     }
 }

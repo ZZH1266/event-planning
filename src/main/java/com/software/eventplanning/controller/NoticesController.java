@@ -4,6 +4,7 @@ import com.software.eventplanning.common.Result;
 import com.software.eventplanning.controller.dto.NoticesDTO;
 import com.software.eventplanning.controller.dto.NoticesReceptionsDTO;
 import com.software.eventplanning.entity.Notices;
+import com.software.eventplanning.entity.NoticesInfo;
 import com.software.eventplanning.service.INoticesService;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +28,9 @@ public class NoticesController {
     @GetMapping("/getall")
     @ResponseBody
     public Result getAllNoticesByUserId(@RequestParam("userId") Integer userId) {
-        List<Notices> notices=noticesService.getnoticesByUserId(userId);
-        if(notices!=null&&notices.size()>0){
-            return Result.success(notices);
+        List<NoticesInfo> noticesinfo=noticesService.getnoticesInfoByUserId(userId);
+        if(noticesinfo!=null&&noticesinfo.size()>0){
+            return Result.success(noticesinfo);
         }
         else return Result.error(400,"当前没有收到任何活动通知");
     }
@@ -39,5 +40,11 @@ public class NoticesController {
     public Result receiveNotices(@RequestBody NoticesReceptionsDTO noticesReceptionsDTO) {
 
           return Result.success(noticesService.receivenotice(noticesReceptionsDTO));
+    }
+
+    @GetMapping("/viewnotice")
+    @ResponseBody
+    public Result viewNotice(@RequestParam Integer logId) {
+        return Result.success(noticesService.getnoticesInfoByLogId(logId));
     }
 }

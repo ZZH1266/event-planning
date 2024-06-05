@@ -5,13 +5,16 @@ import com.software.eventplanning.controller.dto.NoticesDTO;
 import com.software.eventplanning.controller.dto.NoticesReceptionsDTO;
 import com.software.eventplanning.entity.NoticeReceptions;
 import com.software.eventplanning.entity.Notices;
+import com.software.eventplanning.entity.NoticesInfo;
 
 import java.util.List;
 
 public interface INoticesService extends IService<Notices> {
     Notices sendnotice(NoticesDTO noticesDTO);
 
-    List<Notices> getnoticesByUserId(Integer userId);
+    List<NoticesInfo> getnoticesInfoByUserId(Integer userId);
 
     NoticeReceptions receivenotice(NoticesReceptionsDTO noticesReceptionsDTO);
+
+    NoticesInfo getnoticesInfoByLogId(Integer logId);
 }
