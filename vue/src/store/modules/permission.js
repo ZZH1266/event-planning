@@ -1,4 +1,5 @@
 import auth from '@/plugins/auth'
+import menuData from '@/api/menuData'
 import router, {constantRoutes, dynamicRoutes} from '@/router'
 import {getRouters} from '@/api/menu'
 import Layout from '@/layout/index'
@@ -33,94 +34,31 @@ const permission = {
         GenerateRoutes({commit, dispatch, state, rootState}) {
             return new Promise(resolve => {
                 console.log('--------GenerateRoutes---------',rootState.user.roles);
-                var res = {};
+                var data = {};
+                console.log('++++++++++++++++', menuData);
                 if (rootState.user.roles.includes('admin')) {
+                    data = menuData.data.admin;
                     // 向后端请求路由数据
-                    res = {
+                    /*res = {
                         "msg": "操作成功",
                         "code": 200,
                         "data": [
-                            {
-                                "name": "System",
-                                "path": "/system",
-                                "hidden": false,
-                                "redirect": "noRedirect",
-                                "component": "Layout",
-                                "alwaysShow": true,
-                                "meta": {
-                                    "title": "系统管理",
-                                    "icon": "system",
-                                    "noCache": false,
-                                    "link": null
-                                },
-                                "children": [
-                                    {
-                                        "name": "User",
-                                        "path": "user",
-                                        "hidden": false,
-                                        "component": "system/user/index",
-                                        "meta": {
-                                            "title": "用户管理",
-                                            "icon": "user",
-                                            "noCache": false,
-                                            "link": null
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "Activities",
-                                "path": "/activities",
-                                "hidden": false,
-                                "redirect": "noRedirect",
-                                "component": "Layout",
-                                "alwaysShow": true,
-                                "meta": {
-                                    "title": "活动管理",
-                                    "icon": "system",
-                                    "noCache": false,
-                                    "link": null
-                                },
-                                "children": [
-                                    {
-                                        "name": "Act",
-                                        "path": "act",
-                                        "hidden": false,
-                                        "component": "system/act/index",
-                                        "meta": {
-                                            "title": "活动管理",
-                                            "icon": "user",
-                                            "noCache": false,
-                                            "link": null
-                                        }
-                                    },
-                                    {
-                                        "name": "Template",
-                                        "path": "template",
-                                        "hidden": false,
-                                        "component": "system/template/index",
-                                        "meta": {
-                                            "title": "模板管理",
-                                            "icon": "user",
-                                            "noCache": false,
-                                            "link": null
-                                        }
-                                    }
-                                ]
-                            }
+
                         ]
-                    };
+                    };*/
                 }else{
-                    res = {
+                    data = menuData.data.user;
+
+                    /*res = {
                         "msg": "操作成功",
                         "code": 200,
                         "data": []
-                    };
+                    };*/
                 }
-
+                console.log('------mmmmmmmmmm----------', data);
                 // getRouters().then(res => {
-                const sdata = JSON.parse(JSON.stringify(res.data))
-                const rdata = JSON.parse(JSON.stringify(res.data))
+                const sdata = JSON.parse(JSON.stringify(data))
+                const rdata = JSON.parse(JSON.stringify(data))
                 const sidebarRoutes = filterAsyncRouter(sdata)
                 const rewriteRoutes = filterAsyncRouter(rdata, false, true)
                 const asyncRoutes = filterDynamicRoutes(dynamicRoutes);

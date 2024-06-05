@@ -43,7 +43,7 @@ export function AddTemplate(data) {
 }
 
 /**
- *
+ *模板列表
  * @param query
  */
 export function listTemplate(query) {

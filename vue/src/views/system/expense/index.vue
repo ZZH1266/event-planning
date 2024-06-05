@@ -4,32 +4,16 @@
             <!--用户数据-->
             <el-col :span="24" :xs="24">
                 <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-                    <el-form-item label="活动名称" prop="activityName">
+                    <el-form-item label="申请人">
                         <el-input
-                                v-model="queryParams.activityName"
-                                placeholder="请输入活动名称"
+                                v-model="queryParams.userId"
+                                placeholder="请输入申请人名称"
                                 clearable
                                 style="width: 240px"
                                 @keyup.enter.native="handleQuery"
                         />
                     </el-form-item>
-
-                    <el-form-item label="状态" prop="status">
-                        <el-select
-                                v-model="queryParams.status"
-                                placeholder="活动状态"
-                                clearable
-                                style="width: 240px"
-                        >
-                            <el-option
-                                    v-for="dict in dict.type.sys_normal_disable"
-                                    :key="dict.value"
-                                    :label="dict.label"
-                                    :value="dict.value"
-                            />
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="活动日期">
+                    <el-form-item label="申请日期">
                         <el-date-picker
                                 v-model="dateRange"
                                 style="width: 240px"
@@ -45,15 +29,13 @@
                         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                     </el-form-item>
                 </el-form>
-                <el-row style="padding-bottom: 10px">
-                    <el-button type="primary" icon="el-icon-new" size="mini" @click="createActivity">新增活动</el-button>
-                </el-row>
 
-                <el-table v-loading="loading" :data="actList" @selection-change="handleSelectionChange">
+                <el-table v-loading="loading" :data="expenseList" @selection-change="handleSelectionChange">
                     <!--<el-table-column type="selection" width="50" align="center" />-->
-                    <el-table-column label="活动编号" align="center" key="activityId" prop="activityId"/>
-                    <el-table-column label="活动名称" align="left" key="activityName" prop="activityName"/>
-                    <el-table-column label="活动地址" align="left" key="address" prop="address"/>
+                    <el-table-column label="活动" align="left" key="activityId" prop="activityId"/>
+                    <el-table-column label="申请人" align="left" key="userId" prop="userId"/>
+                    <el-table-column label="报销金额" align="center" key="amount" prop="amount"/>
+                    <el-table-column label="报销说明" align="center" key="description" prop="description"/>
                     <!--<el-table-column label="状态" align="center" key="status">
                         <template slot-scope="scope">
                             <el-switch
@@ -64,40 +46,28 @@
                             ></el-switch>
                         </template>
                     </el-table-column>-->
-                    <el-table-column label="创建时间" align="center" prop="createdTime" width="160">
+                    <el-table-column label="申请时间" align="center" prop="submittedAt" width="160">
                         <template slot-scope="scope">
-                            <span>{{ parseTime(scope.row.createdTime) }}</span>
+                            <span>{{ parseTime(scope.row.submittedAt) }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column
-                            label="操作"
-                            align="center"
-                            width="230"
-                            class-name="small-padding fixed-width"
-                    >
-                        <template slot-scope="scope" v-if="scope.row.userId !== 1">
-                            <el-button
-                                    size="mini"
-                                    type="text"
-                                    icon="el-icon-plus"
-                                    @click="handleDetail(scope.row)"
-                            >详情
-                            </el-button>
-                            <el-button
-                                    size="mini"
-                                    type="text"
-                                    icon="el-icon-edit"
-                                    @click="handleUpdate1(scope.row)"
-                            >修改
-                            </el-button>
-                            <el-button
-                                    size="mini"
-                                    type="text"
-                                    icon="el-icon-delete"
-                                    @click="handleDelete(scope.row)"
-                            >删除
-                            </el-button>
 
+                    <el-table-column label="操作" align="center" key="status">
+                        <template slot-scope="scope">
+                            <el-button
+                                    size="mini"
+                                    type="text"
+                                    icon="el-icon-check"
+                                    @click="handleApply(form.activityId,scope.row)"
+                            >同意
+                            </el-button>
+                            <el-button
+                                    size="mini"
+                                    type="text"
+                                    icon="el-icon-close"
+                                    @click="handleReject(form.activityId,scope.row)"
+                            >拒绝
+                            </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -113,16 +83,16 @@
         </el-row>
 
         <!-- 添加或修改用户配置对话框 -->
-        <el-dialog title="添加活动" :visible.sync="open" width="620px" append-to-body>
+        <el-dialog title="申请报销" :visible.sync="open" width="620px" append-to-body>
             <el-form ref="form" :model="form" :rules="rules" label-width="110px">
                 <el-row>
                     <el-col>
-                        <el-form-item label="请选择活动模板" prop="templateId">
-                            <el-select v-model="form.templateId" placeholder="请选择活动模板">
+                        <el-form-item label="报销活动" prop="activityId">
+                            <el-select v-model="form.activityId" placeholder="请选择报销的活动">
                                 <el-option
-                                        v-for="item in templateList"
+                                        v-for="item in actList"
                                         :key="item.activityId"
-                                        :label='item.activityId +","+item.placePlanToUse+","+item.activitySize'
+                                        :label='item.activityName'
                                         :value="item.activityId">
                                 </el-option>
                             </el-select>
@@ -131,21 +101,14 @@
                 </el-row>
                 <el-row>
                     <el-col>
-                        <el-form-item label="活动名称" prop="activityName">
-                            <el-input v-model="form.activityName" placeholder="请输入活动名称"/>
+                        <el-form-item label="报销金额" prop="amount">
+                            <el-input-number :min="1" :max="50000"  v-model="form.amount" placeholder="请输入报销金额" maxlength="20"/>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col>
-                        <el-form-item label="地点" prop="safetyOfficerName">
-                            <el-input v-model="form.address" placeholder="请输入地点" maxlength="50"/>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col>
-                        <el-form-item label="活动简介">
+                        <el-form-item label="报销说明">
                             <el-input v-model="form.description" type="textarea" rows="5"/>
                         </el-form-item>
                     </el-col>
@@ -159,12 +122,12 @@
         </el-dialog>
 
         <!--申请加入列表与管理审核-->
-        <el-dialog title="活动详情" :visible.sync="detailOpen" width="620px" append-to-body>
+        <el-dialog title="资源详情" :visible.sync="detailOpen" width="620px" append-to-body>
             <el-form label-width="110px">
                 <el-row>
                     <el-col>
-                        <el-form-item label="活动名称">
-                            <el-input v-model="form.activityName" disabled/>
+                        <el-form-item label="资源名称">
+                            <el-input v-model="form.resourceName" disabled/>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -177,14 +140,14 @@
                 </el-row>
                 <el-row>
                     <el-col>
-                        <el-form-item label="活动简介">
+                        <el-form-item label="资源简介">
                             <el-input v-model="form.description" type="textarea" rows="5" disabled/>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <div v-if="participanList && participanList.length>0">
                     <el-row>
-                        <el-col><h2>申请加入活动列表</h2></el-col>
+                        <el-col><h2>申请加入资源列表</h2></el-col>
                     </el-row>
                     <el-row>
                         <el-table v-loading="loading" :data="participanList">
@@ -214,7 +177,7 @@
                     </el-row>
                 </div>
                 <div v-else>
-                    <h2>暂时没有人申请加入活动</h2>
+                    <h2>暂时没有人申请加入资源</h2>
                 </div>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -235,13 +198,14 @@
         components: {},
         data() {
             return {
+                resourceTypeOptions:[{label: '场地', value: '场地'}, {label: '设备', value: '设备'}],
                 dict: {
                     type: {//筹备中','进行中','已完成
                         sys_normal_disable: [{label: '筹备中', value: '筹备中'}, {label: '进行中', value: '进行中'}, {label: '已完成', value: '已完成'}],
                     }
                 },
                 // 遮罩层
-                loading: true,
+                loading: false,
                 // 选中数组
                 ids: [],
                 // 非单个禁用
@@ -252,10 +216,11 @@
                 showSearch: true,
                 // 总条数
                 total: 0,
-                // 活动表格数据
-                actList: null,
+                // 资源表格数据
+                expenseList: [{"userId": 1122, "activityId": "1", "amount": 500, "description": "文化楼篮球场维修"}],
+                actList: [{"activityId":"1","amount":500,"description":"文化楼篮球场维修"}],
                 templateList: [],
-                //活动申请表格数据
+                //资源申请表格数据
                 participanList: null,
                 participanTotal: 0,
                 // 弹出层标题
@@ -296,7 +261,7 @@
                 queryParams: {
                     pageNum: 1,
                     pageSize: 10,
-                    activityName: undefined,
+                    resourceName: undefined,
                     status: undefined,
                 },
                 participantQueryParams: {
@@ -306,7 +271,13 @@
                 },
                 // 表单校验
                 rules: {
-                    activityName: [
+                    activityId: [
+                        {required: true, message: "活动不能为空", trigger: "blur"},
+                    ],
+                    amount: [
+                        {required: true, message: "报销金额不能为空", trigger: "blur"},
+                    ],
+                    resourceName: [
                         {required: true, message: "用户名称不能为空", trigger: "blur"},
                         {min: 2, max: 20, message: '用户名称长度必须介于 2 和 20 之间', trigger: 'blur'}
                     ],
@@ -342,7 +313,7 @@
             }
         },
         created() {
-            this.getList();
+            //this.getList();
             // this.getConfigKey("sys.user.initPassword").then(response => {
             //   this.initPassword = response.msg;
             // });
@@ -351,7 +322,7 @@
             createActivity() {
                 this.reset();
                 this.open = true;
-                this.getTemplateList();
+                this.getList();
             },
             setRoles() {
 
@@ -409,7 +380,7 @@
             // 用户状态修改
             handleStatusChange(row) {
                 let text = row.status === "0" ? "启用" : "停用";
-                this.$modal.confirm('确认要"' + text + '""' + row.activityName + '"用户吗？').then(function () {
+                this.$modal.confirm('确认要"' + text + '""' + row.resourceName + '"用户吗？').then(function () {
                     return changeUserStatus(row.userId, row.status);
                 }).then(() => {
                     this.$modal.msgSuccess(text + "成功");
@@ -426,7 +397,7 @@
             reset() {
                 this.form = {
                     activityId: undefined,
-                    activityName: undefined,
+                    resourceName: undefined,
                     address: undefined,
                     templateId: undefined,
                     description: undefined,
@@ -495,7 +466,7 @@
             },
             /** 重置密码按钮操作 */
             handleResetPwd(row) {
-                this.$prompt('请输入"' + row.activityName + '"的新密码', "提示", {
+                this.$prompt('请输入"' + row.resourceName + '"的新密码', "提示", {
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",
                     closeOnClickModal: false,
@@ -540,7 +511,7 @@
             },
             /** 删除按钮操作 */
             handleDelete(row) {
-                const userIds = row.activityName;
+                const userIds = row.resourceName;
                 this.$modal.confirm('是否确认删除"' + userIds + '"的数据项？').then(function () {
                     return delUser(userIds);
                 }).then(() => {
