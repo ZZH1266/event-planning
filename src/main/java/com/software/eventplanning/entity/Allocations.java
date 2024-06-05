@@ -15,6 +15,8 @@ import java.sql.Timestamp;
 public class Allocations {
     @TableId(value="allocation_id",type = IdType.AUTO)
     Integer allocationId;
+    @TableField(value="activity_id")
+    Integer activityId;
     @TableField(value="resource_id")
     Integer resourceId;
     @TableField(value="resource_name")

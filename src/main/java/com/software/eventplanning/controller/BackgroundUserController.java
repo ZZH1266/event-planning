@@ -34,7 +34,7 @@ public class BackgroundUserController {
         }
         int current= backgroundUserFindAllUsersDTO.getCurrent(); //当前查询的页数
         int size= backgroundUserFindAllUsersDTO.getSize(); //每页显示的记录数
-        IPage<Users> iPage=iBackgroundUserService.findAllUsers(current,size);
+        IPage<Users> iPage=iBackgroundUserService.findAllUsers(backgroundUserFindAllUsersDTO);
         return iPage;
     }
     @PostMapping("/background/user/findAllAdmins")  //查询所有管理员和超级管理员的信息

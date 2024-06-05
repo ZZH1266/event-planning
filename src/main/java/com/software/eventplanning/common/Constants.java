@@ -36,6 +36,7 @@ public interface Constants {
     Integer CODE_534=534;//权限不足
     Integer CODE_535=535;//管理员无法修改自身权限
     Integer CODE_536=536;//无法调整其他管理员的权限
+    Integer CODE_537=537;//要删除的活动不存在
 
     Integer CODE_600 = 600;
     Integer CODE_601 = 601;

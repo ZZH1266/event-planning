@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.software.eventplanning.common.Result;
+import com.software.eventplanning.controller.dto.BackgroundUserFindAllUsersDTO;
 import com.software.eventplanning.entity.Users;
 import com.software.eventplanning.mapper.BackgroundUserMapper;
 import com.software.eventplanning.service.IBackgroundUserService;
 import org.apache.catalina.User;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +24,22 @@ public class BackgroundUserServiceImpl extends ServiceImpl<BackgroundUserMapper,
     @Autowired
     BackgroundUserMapper backgroundUserMapper;
     @Override
-    public IPage<Users> findAllUsers(int current,int size) //分页查询所有用户
+    public IPage<Users> findAllUsers(BackgroundUserFindAllUsersDTO backgroundUserFindAllUsersDTO) //分页查询所有用户
     {
         QueryWrapper<Users>queryWrapper=new QueryWrapper<>(); //按用户ID升序查询
         queryWrapper
                 .orderByAsc("user_id");
-        Page<Users> page=new Page<>(current,size);
+        if(backgroundUserFindAllUsersDTO.getUserId()!=0)
+        {
+            queryWrapper
+                    .eq("user_id",backgroundUserFindAllUsersDTO.getUserId());
+        }
+        if(!StringUtils.isBlank(backgroundUserFindAllUsersDTO.getUserName()))
+        {
+            queryWrapper
+                    .like("username",backgroundUserFindAllUsersDTO.getUserName());
+        }
+        Page<Users> page=new Page<>(backgroundUserFindAllUsersDTO.getCurrent(),backgroundUserFindAllUsersDTO.getSize());
         IPage<Users> iPage=backgroundUserMapper.selectPage(page,queryWrapper);
         return iPage;
     }
