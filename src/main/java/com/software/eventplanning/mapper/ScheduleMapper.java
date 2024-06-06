@@ -21,7 +21,7 @@ public interface ScheduleMapper extends BaseMapper<Participants> {
     List<Activities> getActivitiesFromParticipantsByUserId(@Param("userId") Integer userId);
 
     //创建活动时的冲突检测
-    @Select("SELECT a.* FROM activities AS a JOIN participants AS p ON a.activity_id = p.activity_id WHERE p.user_id = #{userId} AND ((a.start_time < #{endTime} AND a.end_time > #{startTime}))")
+    @Select("SELECT a.* FROM activities AS a JOIN participants AS p ON a.activity_id = p.activity_id WHERE p.user_id = #{userId} AND ((a.start_time <= #{endTime} AND a.end_time >= #{startTime}))")
     List<Activities> findCollisionInActivity(@Param("userId") int userId, @Param("startTime") DateTime startTime, @Param("endTime") DateTime endTime);
 
     //加入活动时的冲突检测

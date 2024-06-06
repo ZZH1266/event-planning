@@ -29,7 +29,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, Participant
     {
         List<Activities> all;
         all= scheduleMapper.findCollisionInActivity(userId,new DateTime(activitiesDTO.getStartTime()),new DateTime(activitiesDTO.getEndTime()));
-        if(all==null)
+        if(all.size()==0)
         {
             return false;
         }
@@ -43,7 +43,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, Participant
     {
       List<Activities> all;
       all=scheduleMapper.findCollisionInParticipants(userId,activityId);
-        if(all==null)
+        if(all.size()==0)
         {
             return false;
         }
