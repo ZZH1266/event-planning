@@ -10,6 +10,7 @@ import com.software.eventplanning.mapper.UsersMapper;
 import com.software.eventplanning.entity.Users;
 import com.software.eventplanning.exception.ServiceException;
 import com.software.eventplanning.service.ILoginService;
+import com.software.eventplanning.utils.TokenUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,12 +19,14 @@ public class LoginServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     private static final Log LOG = Log.get();
 
     @Override
-    public Users login(LoginDTO loginDTO) {
-        System.out.println("loginDTO: " + loginDTO);
+    public LoginDTO login(LoginDTO loginDTO) {
         Users one = getUserInfo(loginDTO);
         if (one != null) {
             BeanUtil.copyProperties(one, loginDTO, true);
-            return one;
+            //设置token
+            String token = TokenUtils.genToken(one.getId().toString(), one.getPassword());
+            loginDTO.setToken(token);
+            return loginDTO;
         } else {
             throw new ServiceException(Constants.CODE_600, "用户名或密码错误");
         }
