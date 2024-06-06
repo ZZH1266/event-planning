@@ -9,7 +9,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: dcdcddcdcdcscscd@qq.com
-    password: mopjjzyxsjvejfda
+    password: tdbtrpsfqhbvhdeb
     # smtp的指定端口 使用465要将protocol改为smtps
     port: 587
     properties:
