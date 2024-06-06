@@ -1,10 +1,12 @@
 package com.software.eventplanning.controller;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.StrUtil;
 import com.software.eventplanning.common.Result;
 import com.software.eventplanning.controller.dto.AddActivitiesDTO;
 import com.software.eventplanning.entity.Activities;
 import com.software.eventplanning.service.IAddActivitiesService;
+import com.software.eventplanning.service.IScheduleService;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.ibatis.jdbc.Null;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,13 +18,15 @@ import javax.annotation.Resource;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import static com.software.eventplanning.common.Constants.CODE_329;
 import static com.software.eventplanning.common.Constants.CODE_401;
 
 @RestController
 public class AddActivitiesController {
     @Resource
     private IAddActivitiesService addActivitiesService;
-
+    @Resource
+    private IScheduleService scheduleService;
     @PostMapping("/AddActivities")
     @ResponseBody
     public Result AddActivities(@RequestBody AddActivitiesDTO addActivitiesDTO)
@@ -41,6 +45,10 @@ public class AddActivitiesController {
         if(StrUtil.isBlank(activityName)||StrUtil.isBlank(description)||creatorId== null ||templateId==null)
         {
             return Result.error(CODE_401,"缺少创建活动必须的信息");
+        }
+        if(scheduleService.IsConflictedWhenCreate(creatorId,addActivitiesDTO))
+        {
+            return Result.error(CODE_329,"与参加的活动冲突！");
         }
         Activities activities=new Activities();
         //添加活动

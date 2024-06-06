@@ -44,5 +44,6 @@ public class UserController {
         List<Integer> activityIds = participantsMapper.selectJoinedActivityIdsByUserId(userId);
         wrapper.in("activity_id", activityIds);
         return Result.success(activitiesService.page(page, wrapper));
+
     }
 }

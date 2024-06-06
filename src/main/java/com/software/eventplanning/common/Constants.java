@@ -46,4 +46,7 @@ public interface Constants {
     Integer CODE_301 = 301; // 报销信息有空项
     Integer CODE_302 = 302;
 
+    Integer CODE_328 = 328;//
+    Integer CODE_329 = 329;//创建时时间冲突
+    Integer CODE_330 = 330;//加入时时间冲突
 }
