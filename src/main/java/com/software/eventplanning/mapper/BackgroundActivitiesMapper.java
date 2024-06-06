@@ -1,12 +1,15 @@
 package com.software.eventplanning.mapper;
 
+import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.software.eventplanning.entity.Activities;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import com.software.eventplanning.entity.Allocations;
+import com.software.eventplanning.entity.Bookings;
+import org.apache.ibatis.annotations.*;
 
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -43,4 +46,19 @@ public interface BackgroundActivitiesMapper extends BaseMapper<Activities> {
     int deleteFromResourceAllocationsById(@Param("activityId")int activityId);
     @Delete("delete from resource_bookings where activity_id =#{activityId}")
     int deleteFromResourceBookingsById(@Param("activityId")int activityId);
+
+    //下面开始为后台审批活动场地所用SQL语句
+    @Select("select * from resource_bookings where booking_id=#{bookingId}")
+    List<Bookings> findFromResourceBookingsByBookingId(@Param("bookingId") int bookingId); //问题：查询出的ResultSet中的DateTime类型无法给返回值中Bookings类型中的DateTIme类型赋值
+    @Insert("insert into resource_allocations (activity_id,resource_id,resource_name,start_time,end_time,allocated_at) values (#{activityId},#{resourceId},#{resourceName},#{startTime},#{endTime},#{allocatedAt})")
+    @SelectKey(statement = "select last_insert_id()",keyProperty = "allocationId",before = false,resultType = Integer.class) //获取主键
+    int insertIntoResourceAllocation(Allocations allocations);
+    @Update("update resource_bookings set status = '已审批' where booking_id=#{bookingId}") //同意审批
+    int updateResourceBookingsStatusTrue(Bookings bookings);
+    @Update("update resource_bookings set status ='拒绝'where booking_id=#{bookingId}")
+    int updateResourceBookingsStatusFalse(Bookings bookings);
+
+    //测试
+    @Select("select start_time from resource_bookings where booking_id=4")
+    List<DateTime>  test();
 }

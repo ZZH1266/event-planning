@@ -26,9 +26,9 @@ public class Bookings {
     @TableField(value="booked_by")
     Integer userId;
     @TableField(value = "start_time")
-    DateTime startTime;
+    String startTime;
     @TableField(value = "end_time")
-    DateTime endTime;
+    String endTime;
     @TableField(value="status")
     String status;
     @TableField(value="created_at")

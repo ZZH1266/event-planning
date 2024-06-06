@@ -17,14 +17,14 @@ public interface BookingsMapper extends BaseMapper<Bookings> {
             "and ((start_time <=  #{startTime} and #{startTime} < end_time)" +
             "or (start_time < #{endTime} and #{endTime} <= end_time) " +
             "or (#{startTime} < start_time and #{endTime} > end_time))")
-    List<Allocations> findCollisionInAllocation(@Param("resourceId") int resourceId, @Param("startTime") DateTime startTime, @Param("endTime") DateTime endTime);
+    List<Allocations> findCollisionInAllocation(@Param("resourceId") int resourceId, @Param("startTime") String startTime, @Param("endTime") String endTime);
 
     //在预定表中查找冲突预定
     @Select("select resource_id from resource_bookings where resource_id = #{resourceId} " +
             "and ((start_time <=  #{startTime} and #{startTime} < end_time)" +
             "or (start_time < #{endTime} and #{endTime} <= end_time) " +
             "or (#{startTime} < start_time and #{endTime} > end_time))")
-    List<Bookings> findCollisionInBookings(@Param("resourceId") int resourceId, @Param("startTime") DateTime startTime, @Param("endTime") DateTime endTime);
+    List<Bookings> findCollisionInBookings(@Param("resourceId") int resourceId, @Param("startTime") String startTime, @Param("endTime") String endTime);
 
     //根据资源名称查询资源类型
     @Select("select resource_name from resources where resource_id=#{resourceId}")
