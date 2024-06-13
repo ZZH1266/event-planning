@@ -4,14 +4,16 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.software.eventplanning.controller.dto.NoticesDTO;
 import com.software.eventplanning.controller.dto.NoticesReceptionsDTO;
-import com.software.eventplanning.entity.NoticeReceptions;
-import com.software.eventplanning.entity.Notices;
-import com.software.eventplanning.entity.NoticesInfo;
-import com.software.eventplanning.entity.Resources;
+import com.software.eventplanning.entity.*;
+import com.software.eventplanning.exception.ServiceException;
+import com.software.eventplanning.mapper.ActivitiesMapper;
 import com.software.eventplanning.mapper.NoticesMapper;
+import com.software.eventplanning.mapper.ResourcesMapper;
+import com.software.eventplanning.mapper.UsersMapper;
 import com.software.eventplanning.service.INoticesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,10 +32,26 @@ public class NoticesServiceImpl extends ServiceImpl<NoticesMapper, Notices> impl
     private static final Log LOG = Log.get();
     @Autowired
     private NoticesMapper noticesMapper;
+    @Autowired
+    private UsersMapper usersMapper;
+    @Autowired
+    private ActivitiesMapper activitiesMapper;
 
     @Override
     public Notices sendnotice(NoticesDTO noticesDTO){
         Notices one = new Notices();
+        Integer sendId=noticesDTO.getUserId();
+        Integer sentId=noticesDTO.getUser2Id();
+        Integer activityId=noticesDTO.getActivityId();
+        Users userone=usersMapper.selectByUserId(sendId);
+        Users usertwo=usersMapper.selectByUserId(sentId);
+        Activities activity=activitiesMapper.selectById(activityId);
+        if(userone==null||usertwo==null){
+            throw new ServiceException(400,"用户不存在");
+        }
+        if(activity==null){
+            throw new ServiceException(400,"活动不存在");
+        }
         BeanUtil.copyProperties(noticesDTO, one, true);
         save(one);
         return one;
