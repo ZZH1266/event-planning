@@ -26,6 +26,10 @@ public class ExpenseClaimController {
         if ( userId==null || activityId == null || amount==null || StrUtil.isBlank(description)) {
             return Result.error(Constants.CODE_301, "报销申请有空项！");
         }
+        else if(expense_claimService.checkExpense(expense_claimDTO))
+        {
+            return Result.error(Constants.CODE_327,"报销信息有误");
+        }
         else {
             return Result.success(expense_claimService.submit(expense_claimDTO));
         }

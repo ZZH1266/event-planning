@@ -6,4 +6,5 @@ import com.software.eventplanning.entity.ExpenseClaim;
 
 public interface IExpenseClaimService extends IService<ExpenseClaim> {
     ExpenseClaim submit(ExpenseClaimDTO expense_claimDTO);
+    boolean checkExpense(ExpenseClaimDTO expenseClaimDTO);
 }
