@@ -31,4 +31,7 @@ public interface NoticesMapper extends BaseMapper<Notices> {
             "JOIN notification_logs nl ON nr.log_id = nl.log_id\n" +
             "WHERE nl.sent_by =#{userId} ")
     List<NoticeReceptions> getreceptionsByUserId(Integer userId);
+
+    @Select("select * from notification_logs where log_id=#{logId}")
+    Notices selectById(Integer logId);
 }
