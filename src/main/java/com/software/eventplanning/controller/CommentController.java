@@ -24,7 +24,7 @@ public class CommentController {
         return Result.success(commentService.getAllComments(activityId));
     }
 
-    @PostMapping("/")
+    @PostMapping("/addComment")
     public Result addComment(@RequestBody Comments comments) {
         return Result.success(commentService.addComment(comments));
     }
