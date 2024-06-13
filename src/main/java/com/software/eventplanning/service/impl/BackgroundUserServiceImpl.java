@@ -68,6 +68,10 @@ public class BackgroundUserServiceImpl extends ServiceImpl<BackgroundUserMapper,
         {
             return Result.error(CODE_531,"该用户不存在");
         }
+        if(role==2)
+        {
+            return Result.error(CODE_540,"不能设置新的超级管理员");
+        }
         user.setRole(role); //改变权限
         user.setUpdatedTime(Timestamp.valueOf(LocalDateTime.now()));//更改记录中的最近修改时间
         boolean flag=update(user,queryWrapper);

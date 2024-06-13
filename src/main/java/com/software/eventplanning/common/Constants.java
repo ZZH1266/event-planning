@@ -39,6 +39,7 @@ public interface Constants {
     Integer CODE_537=537;//要删除的活动不存在
     Integer CODE_538=538;//要审批的申请ID不存在
     Integer CODE_539=539;//申请已经被处理，不要重复处理
+    Integer CODE_540=540;//不能设置新的超级管理员
 
     Integer CODE_600 = 600;
     Integer CODE_601 = 601;

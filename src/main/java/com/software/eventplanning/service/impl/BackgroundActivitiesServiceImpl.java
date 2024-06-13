@@ -91,11 +91,11 @@ public class BackgroundActivitiesServiceImpl extends ServiceImpl<BackgroundActiv
     {
         int bookingId=backgroundActivitiesApproveBookingsDTO.getBookingId();
         List<Bookings>bookings=backgroundActivitiesMapper.findFromResourceBookingsByBookingId(bookingId);
-        Bookings booking=bookings.get(0);
-        if(booking==null)
+        if(bookings.size()==0)
         {
             throw new ServiceException(CODE_538,"您要审批的申请ID不存在");
         }
+        Bookings booking=bookings.get(0);
         if(booking.getStatus().equals("已审批")||booking.getStatus().equals("拒绝"))
         {
             throw new ServiceException(CODE_539,"该申请已经被处理");

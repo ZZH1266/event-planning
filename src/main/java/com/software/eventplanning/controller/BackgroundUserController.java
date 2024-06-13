@@ -28,6 +28,10 @@ public class BackgroundUserController {
     @PostMapping("/background/user/findAllUsers")
     public IPage<Users> findAllUsers(@RequestBody BackgroundUserFindAllUsersDTO backgroundUserFindAllUsersDTO)
     {
+        if(backgroundUserFindAllUsersDTO.getMyId()<=0)
+        {
+            throw new ServiceException(CODE_533,"请确认您是否正确登录");
+        }
         if(iBackgroundUserService.getUserRole(backgroundUserFindAllUsersDTO.getMyId())==0)
         {
             throw new ServiceException(CODE_534,"权限不足");
@@ -40,6 +44,10 @@ public class BackgroundUserController {
     @PostMapping("/background/user/findAllAdmins")  //查询所有管理员和超级管理员的信息
     public IPage<Users> findAllAdmins(@RequestBody BackgroundUserFindAllAdminsDTO backgroundUserFindAllAdminsDTO)
     {
+        if(backgroundUserFindAllAdminsDTO.getMyId()<=0)
+        {
+            throw new ServiceException(CODE_533,"请确认您是否正确登录");
+        }
         if(iBackgroundUserService.getUserRole(backgroundUserFindAllAdminsDTO.getMyId())==2)
         {
             int current=backgroundUserFindAllAdminsDTO.getCurrent();
