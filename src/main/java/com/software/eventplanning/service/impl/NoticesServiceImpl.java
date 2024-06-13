@@ -29,7 +29,6 @@ import static com.baomidou.mybatisplus.core.toolkit.SystemClock.now;
 @Service
 public class NoticesServiceImpl extends ServiceImpl<NoticesMapper, Notices> implements INoticesService {
 
-    private static final Log LOG = Log.get();
     @Autowired
     private NoticesMapper noticesMapper;
     @Autowired
@@ -66,6 +65,11 @@ public class NoticesServiceImpl extends ServiceImpl<NoticesMapper, Notices> impl
     @Override
     public NoticeReceptions receivenotice(NoticesReceptionsDTO noticesReceptionsDTO){
         NoticeReceptions  one = new NoticeReceptions();
+        Integer logId=noticesReceptionsDTO.getLogId();
+        Notices notice=noticesMapper.selectById(logId);
+        if(notice==null){
+            throw new ServiceException(400,"该通知不存在");
+        }
         BeanUtil.copyProperties(noticesReceptionsDTO, one, true);
         noticesMapper.addReception(one);
          return one;
@@ -73,6 +77,10 @@ public class NoticesServiceImpl extends ServiceImpl<NoticesMapper, Notices> impl
 
     @Override
     public NoticesInfo getnoticesInfoByLogId(Integer logId){
+        Notices one = noticesMapper.selectById(logId);
+        if(one==null){
+            throw new ServiceException(400,"该通知不存在");
+        }
         NoticesInfo noticesInfo=noticesMapper.getnoticesInfoByLogId(logId);
         return noticesInfo;
     }

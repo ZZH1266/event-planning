@@ -10,6 +10,7 @@ import com.software.eventplanning.entity.ExpenseClaim;
 import com.software.eventplanning.mapper.ExpenseClaimMapper;
 import com.software.eventplanning.exception.ServiceException;
 import com.software.eventplanning.service.IExpenseClaimService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +18,8 @@ public class ExpenseClaimServiceImpl extends ServiceImpl<ExpenseClaimMapper, Exp
 {
 
     private static final Log LOG = Log.get();
-
+    @Autowired
+    ExpenseClaimMapper expenseClaimMapper;
     @Override
     public ExpenseClaim submit(ExpenseClaimDTO expense_claimDTO) {
         ExpenseClaim one = getExpenseClaimInfo(expense_claimDTO);
@@ -30,6 +32,14 @@ public class ExpenseClaimServiceImpl extends ServiceImpl<ExpenseClaimMapper, Exp
             throw new ServiceException(Constants.CODE_301,"已存在相同的报销申请！");
         }
         return one;
+    }
+
+    //报销申请是否有效
+    public boolean checkExpense(ExpenseClaimDTO expenseClaimDTO)
+    {
+        int res = expenseClaimMapper.IsExpenseRight(expenseClaimDTO.getUserId(),expenseClaimDTO.getActivityId());
+        if(res != 0) return false;
+        return true;
     }
 
     // DTO类型数据转换为数据库所需的类型
