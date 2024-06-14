@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 import { parseStrEmpty } from "@/utils/cms";
+//查询所有用户
+export function list(query) {
+  return request({
+    url: '/system/user/list',
+    method: 'get',
+    params: query
+  })
+}
 
 // 查询用户列表
 export function listUser(query) {
@@ -26,6 +34,7 @@ export function addUser(data) {
     data: data
   })
 }
+
 
 // 修改用户
 export function updateUser(data) {

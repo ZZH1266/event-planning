@@ -28,21 +28,24 @@
         </el-form>
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="50" align="center" />
-          <el-table-column label="活动类型" align="center" key="activityId" prop="activityId"  />
+          <el-table-column label="活动类型" align="center" key="templateId" prop="templateId"  >
+            <template  slot-scope="scope">
+              <span>{{ scope.row.templateId===1?"户外":"室内" }}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="活动规模" align="center" key="activitySize" prop="activitySize"  />
           <el-table-column label="使用场馆类型" align="center" key="placePlanToUse" prop="placePlanToUse"  />
-          <el-table-column label="运动类型" align="center" key="sportsKind" prop="sportsKind"   />
+          <el-table-column label="户外运动类型" align="center" key="sportsKind" prop="sportsKind"   />
           <el-table-column label="安全员姓名" align="center" key="safetyOfficerName" prop="safetyOfficerName" width="120" />
-          <el-table-column label="室内运动类型" align="center" key="indoor_kind" prop="phonenumber" width="120" />
+          <el-table-column label="室内运动类型" align="center" key="indoorKind" prop="indoorKind" width="120"/>
           <el-table-column label="主持人姓名" align="center" key="hostName" prop="hostName" width="120" />
           <el-table-column label="授课教师姓名" align="center" key="teacherName" prop="teacherName" width="120" />
 
-          <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[6].visible" width="160">
+          <!--<el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[6].visible" width="160">
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
-          </el-table-column>
+          </el-table-column>-->
           <el-table-column
             label="操作"
             align="center"
@@ -105,21 +108,21 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row v-show="form.templateId==1">
+        <el-row v-show="form.templateId==2">
           <el-col :span="24">
             <el-form-item label="室内运动类型" prop="indoorKind">
               <el-input v-model="form.indoorKind" placeholder="请输入室内运动类型" maxlength="11" />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row v-show="form.templateId==1">
+        <el-row v-show="form.templateId==2">
           <el-col :span="24">
             <el-form-item label="主持人姓名" prop="hostName">
               <el-input v-model="form.hostName" placeholder="主持人姓名" maxlength="30" />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row v-show="form.templateId==1">
+        <el-row v-show="form.templateId==2">
           <el-col :span="24">
             <el-form-item label="授课教师姓名">
               <el-input v-model="form.teacherName"  placeholder="请输入teacherName"></el-input>
@@ -127,7 +130,7 @@
           </el-col>
         </el-row>
 
-        <el-row v-show="form.templateId==2">
+        <el-row v-show="form.templateId==1">
           <el-col :span="24">
             <el-form-item label="户外运动类型" prop="sportsKind">
               <el-input v-model="form.sportsKind" placeholder="请输入户外运动类型" maxlength="30" />
@@ -135,7 +138,7 @@
           </el-col>
         </el-row>
 
-        <el-row v-show="form.templateId==2">
+        <el-row v-show="form.templateId==1">
           <el-col :span="24">
             <el-form-item label="安全员姓名" prop="safetyOfficerName">
               <el-input v-model="form.safetyOfficerName" placeholder="请输入安全员姓名" maxlength="50" />
@@ -164,7 +167,7 @@ export default {
     return {
       dict:{
         type:{
-          sys_normal_disable:[{label:'室内',value:1},{label:'户外',value: 2}],
+          sys_normal_disable:[{label:'户外',value: 1},{label:'室内',value:2}],
         }
       },
       // 遮罩层

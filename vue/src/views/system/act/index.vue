@@ -9,7 +9,7 @@
                                 v-model="queryParams.activityName"
                                 placeholder="请输入活动名称"
                                 clearable
-                                style="width: 240px"
+                                style="width: 140px"
                                 @keyup.enter.native="handleQuery"
                         />
                     </el-form-item>
@@ -19,7 +19,7 @@
                                 v-model="queryParams.status"
                                 placeholder="活动状态"
                                 clearable
-                                style="width: 240px"
+                                style="width: 140px"
                         >
                             <el-option
                                     v-for="dict in dict.type.sys_normal_disable"
@@ -32,9 +32,9 @@
                     <el-form-item label="活动日期">
                         <el-date-picker
                                 v-model="dateRange"
-                                style="width: 240px"
-                                value-format="yyyy-MM-dd"
-                                type="daterange"
+                                style="width: 380px"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="datetimerange"
                                 range-separator="-"
                                 start-placeholder="开始日期"
                                 end-placeholder="结束日期"
@@ -54,6 +54,11 @@
                     <el-table-column label="活动编号" align="center" key="activityId" prop="activityId"/>
                     <el-table-column label="活动名称" align="left" key="activityName" prop="activityName"/>
                     <el-table-column label="活动地址" align="left" key="address" prop="address"/>
+                    <el-table-column label="活动时间" align="left" >
+                        <template slot-scope="scope">
+                           {{scope.row.startTime}}<br/>{{scope.row.endTime}}
+                        </template>
+                    </el-table-column>
                     <!--<el-table-column label="状态" align="center" key="status">
                         <template slot-scope="scope">
                             <el-switch
@@ -69,6 +74,8 @@
                             <span>{{ parseTime(scope.row.createdTime) }}</span>
                         </template>
                     </el-table-column>
+                    <el-table-column label="活动状态" align="center" key="status" prop="status"/>
+
                     <el-table-column
                             label="操作"
                             align="center"
@@ -87,10 +94,10 @@
                                     size="mini"
                                     type="text"
                                     icon="el-icon-edit"
-                                    @click="handleUpdate1(scope.row)"
+                                    @click="handleUpdate(scope.row)"
                             >修改
                             </el-button>
-                            <el-button
+                            <el-button v-if="sysUser.roles.includes('superadmin')"
                                     size="mini"
                                     type="text"
                                     icon="el-icon-delete"
@@ -144,6 +151,19 @@
                     </el-col>
                 </el-row>
                 <el-row>
+                    <el-form-item label="活动日期">
+                        <el-date-picker
+                                v-model="dateRange"
+                                style="width: 380px"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="datetimerange"
+                                range-separator="-"
+                                start-placeholder="开始时间"
+                                end-placeholder="结束时间"
+                        ></el-date-picker>
+                    </el-form-item>
+                </el-row>
+                <el-row>
                     <el-col>
                         <el-form-item label="活动简介">
                             <el-input v-model="form.description" type="textarea" rows="5"/>
@@ -155,6 +175,83 @@
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="submitForm">确 定</el-button>
                 <el-button @click="cancel">取 消</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog title="修改活动" :visible.sync="mdfOpen" width="620px" append-to-body>
+            <el-form ref="form" :model="form" :rules="rules" label-width="110px">
+                <el-row>
+                    <el-col>
+                        <el-form-item label="请选择活动模板" prop="templateId">
+                            <el-select v-model="form.templateId" placeholder="请选择活动模板">
+                                <el-option
+                                        v-for="item in templateList"
+                                        :key="item.activityId"
+                                        :label='item.activityId +","+item.placePlanToUse+","+item.activitySize'
+                                        :value="item.activityId">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col>
+                        <el-form-item label="活动名称" prop="activityName">
+                            <el-input v-model="form.activityName" placeholder="请输入活动名称"/>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col>
+                        <el-form-item label="地点" prop="safetyOfficerName">
+                            <el-input v-model="form.address" placeholder="请输入地点" maxlength="50"/>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-form-item label="活动日期">
+                        <el-date-picker
+                                v-model="dateRange"
+                                style="width: 380px"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="datetimerange"
+                                range-separator="-"
+                                start-placeholder="开始时间"
+                                end-placeholder="结束时间"
+                        ></el-date-picker>
+                    </el-form-item>
+                </el-row>
+                <el-row>
+                    <el-col>
+                        <el-form-item label="状态" prop="status">
+                                <el-select
+                                        v-model="form.status"
+                                        placeholder="活动状态"
+                                        clearable
+                                        style="width: 140px"
+                                >
+                                    <el-option
+                                            v-for="dict in dict.type.sys_normal_disable"
+                                            :key="dict.value"
+                                            :label="dict.label"
+                                            :value="dict.value"
+                                    />
+                                </el-select>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col>
+                        <el-form-item label="活动简介">
+                            <el-input v-model="form.description" type="textarea" rows="5"/>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="submitForm">确 定</el-button>
+                <el-button @click="mdfOpen=false">取 消</el-button>
             </div>
         </el-dialog>
 
@@ -226,7 +323,17 @@
 
 <script>
     import {getUser, listUser} from "@/api/system/user";
-    import {addActivities,listTemplate, listActivities,listParticipant,applyParticipant,rejectParticipant} from "@/api/system/activities";
+    import {
+        addActivities,
+        listTemplate,
+        listActivities,
+        updateaActivities,
+        delActivities,
+        listParticipant,
+        applyParticipant,
+        rejectParticipant
+    } from "@/api/system/activities";
+    import {mapState} from "vuex";
 
 
     export default {
@@ -265,6 +372,8 @@
                 // 是否显示弹出层
                 open: false,
                 detailOpen: false,
+                //修改窗口
+                mdfOpen: false,
                 // 部门名称
                 deptName: undefined,
                 // 默认密码
@@ -298,6 +407,7 @@
                     pageSize: 10,
                     activityName: undefined,
                     status: undefined,
+                    type: 0
                 },
                 participantQueryParams: {
                     pageNum: 1,
@@ -335,6 +445,11 @@
                 }
             };
         },
+        computed:{
+            ...mapState({
+                sysUser: state => state.user
+            }),
+        },
         watch: {
             // 根据名称筛选部门树
             deptName(val) {
@@ -359,6 +474,9 @@
             /** 查询用户列表 */
             getList() {
                 this.loading = true;
+                if ( this.sysUser.roles.includes('user')){
+                    this.queryParams.type = 1;
+                }
                 listActivities(this.addDateRange(this.queryParams, this.dateRange)).then(res => {
                         this.actList = res.data.records;
                         this.total = res.data.total;
@@ -480,18 +598,12 @@
             },
             /** 修改按钮操作 */
             handleUpdate(row) {
-                this.reset();
-                const activityId = row.activityId || this.ids;
-                getActivities(activityId).then(response => {
-                    this.form = response.data;
-                    this.postOptions = response.posts;
-                    this.roleOptions = response.roles;
-                    this.$set(this.form, "postIds", response.postIds);
-                    this.$set(this.form, "roleIds", response.roleIds);
-                    this.open = true;
-                    this.title = "修改用户";
-                    this.form.password = "";
-                });
+                // this.reset();
+                this.form=row;
+                this.mdfOpen = true;
+                // this.dateRange[0]=row.startTime;
+                // this.dateRange[1]=row.startTime;
+                this.getTemplateList();
             },
             /** 重置密码按钮操作 */
             handleResetPwd(row) {
@@ -523,12 +635,17 @@
                 this.$refs["form"].validate(valid => {
                     if (valid) {
                         if (this.form.activityId != undefined) {
+                            this.form.startTime=this.dateRange[0];
+                            this.form.endTime=this.dateRange[1];
                             updateaActivities(this.form).then(res => {
                                 this.$modal.msgSuccess("修改成功");
-                                this.open = false;
+                                this.mdfOpen = false;
                                 this.getList();
                             });
                         } else {
+                            console.log('this.dateRange', this.dateRange);
+                            this.form.startTime=this.dateRange[0];
+                            this.form.endTime=this.dateRange[1];
                             addActivities(this.form).then(res => {
                                 this.$modal.msgSuccess("新增成功");
                                 this.open = false;
@@ -540,36 +657,18 @@
             },
             /** 删除按钮操作 */
             handleDelete(row) {
-                const userIds = row.activityName;
-                this.$modal.confirm('是否确认删除"' + userIds + '"的数据项？').then(function () {
-                    return delUser(userIds);
+                const actName = row.activityName;
+                const id = row.activityId;
+                this.$modal.confirm('是否确认删除活动:"' + actName + '"？').then(function () {
+                    delActivities(id).then(res => {
+                        this.$modal.msgSuccess("删除成功");
+                        this.getList();
+                    });
                 }).then(() => {
-                    this.getList();
-                    this.$modal.msgSuccess("删除成功");
+
                 }).catch(() => {
                 });
             },
-
-            /** 下载模板操作 */
-            importTemplate() {
-                this.download('system/user/importTemplate', {}, `user_template_${new Date().getTime()}.xlsx`)
-            },
-            // 文件上传中处理
-            handleFileUploadProgress(event, file, fileList) {
-                this.upload.isUploading = true;
-            },
-            // 文件上传成功处理
-            handleFileSuccess(response, file, fileList) {
-                this.upload.open = false;
-                this.upload.isUploading = false;
-                this.$refs.upload.clearFiles();
-                this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", {dangerouslyUseHTMLString: true});
-                this.getList();
-            },
-            // 提交上传文件
-            submitFileForm() {
-                this.$refs.upload.submit();
-            }
         }
     };
 </script>

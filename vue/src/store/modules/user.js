@@ -62,9 +62,11 @@ const user = {
         // 获取用户信息
         GetInfo({commit, state}) {
             return new Promise((resolve, reject) => {
-                //getInfo().then(res => {
-                var res={};
-                if (state.id > 2) {//user
+                getInfo().then(response => {
+                    console.log('getinfo is :', response);
+                    var res=response.data;
+                /*var res={};
+                if (state.id > 2) {
                     res = {
                         "msg": "操作成功",
                         "code": 200,
@@ -176,10 +178,10 @@ const user = {
                             "admin": true
                         }
                     };
-                }
+                }*/
 
-                const user = res.user
-                const avatar = (user.avatar == "" || user.avatar == null) ? require("@/assets/images/profile.jpg") : process.env.VUE_APP_BASE_API + user.avatar;
+                const user = res.user;
+                const avatar = (!user.avatar || user.avatar == "" || user.avatar == null) ? require("@/assets/images/profile.jpg") : process.env.VUE_APP_BASE_API + user.avatar;
                 if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
                     commit('SET_ROLES', res.roles)
                     commit('SET_PERMISSIONS', res.permissions)
@@ -187,12 +189,12 @@ const user = {
                     commit('SET_ROLES', ['ROLE_DEFAULT'])
                 }
                 commit('SET_ID', user.userId)
-                commit('SET_NAME', user.userName)
+                commit('SET_NAME', user.username)
                 commit('SET_AVATAR', avatar)
                 resolve(res)
-                //}).catch(error => {
-                //reject(error)
-                //})
+                }).catch(error => {
+                reject(error)
+                })
             })
         },
 

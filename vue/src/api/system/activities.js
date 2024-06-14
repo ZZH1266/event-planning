@@ -23,6 +23,15 @@ export function addActivities(data) {
   })
 }
 
+export function updateaActivities(data) {
+  return request({
+    url: '/api/activities/update',
+    method: 'put',
+    data: data
+  })
+}
+
+
 export function applyActivities(id) {
   return request({
     url: '/api/activities/apply/'+id,
@@ -30,6 +39,19 @@ export function applyActivities(id) {
   })
 }
 
+export function delActivities(id) {
+  return request({
+    url: '/api/activities/del/'+id,
+    method: 'get',
+  })
+}
+
+export function generateQRForSharing(id) {
+  return request({
+    url: '/generateQRForSharing?activityId='+id,
+    method: 'get',
+  })
+}
 /**
  * 新增模板
  * @param data
@@ -59,7 +81,7 @@ export function listTemplate(query) {
  **/
 export function listParticipant(query) {
   return request({
-    url: '/participant/handle',
+    url: '/activity/participant/handle',
     method: 'get',
     params: query
   })
@@ -71,7 +93,7 @@ export function listParticipant(query) {
  */
 export function applyParticipant(data) {
   return request({
-    url: '/participant/handle/apply',
+    url: '/activity/participant/handle/apply',
     method: 'post',
     data: data
   })
@@ -83,8 +105,20 @@ export function applyParticipant(data) {
  */
 export function rejectParticipant(data) {
   return request({
-    url: '/participant/handle/reject',
+    url: '/activity/participant/handle/reject',
     method: 'post',
     data: data
+  })
+}
+
+
+/**
+ * 判断是否有加入此活动
+ * @param id
+ */
+export function joined(activityId) {
+  return request({
+    url: '/api/activities/joined/' + activityId,
+    method: 'get',
   })
 }

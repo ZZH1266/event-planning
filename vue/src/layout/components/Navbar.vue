@@ -5,8 +5,8 @@
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
 
-    <div class="right-menu">
-
+    <div class="right-menu" style="display: flex;justify-content: space-around">
+      <span style="height: 50px;line-height: 50px;">{{name}}</span>
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar" class="user-avatar">
@@ -44,6 +44,7 @@ export default {
     ...mapGetters([
       'sidebar',
       'avatar',
+      'name',
       'device'
     ]),
     setting: {

@@ -36,7 +36,7 @@ const permission = {
                 console.log('--------GenerateRoutes---------',rootState.user.roles);
                 var data = {};
                 console.log('++++++++++++++++', menuData);
-                if (rootState.user.roles.includes('admin')) {
+                if (rootState.user.roles.includes('admin') || rootState.user.roles.includes('superadmin')) {
                     data = menuData.data.admin;
                     // 向后端请求路由数据
                     /*res = {

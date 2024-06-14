@@ -40,7 +40,7 @@ const menuData = {
                 "alwaysShow": true,
                 "meta": {
                     "title": "活动管理",
-                    "icon": "system",
+                    "icon": "phone",
                     "noCache": false,
                     "link": null
                 },
@@ -52,7 +52,7 @@ const menuData = {
                         "component": "system/act/index",
                         "meta": {
                             "title": "活动管理",
-                            "icon": "user",
+                            "icon": "phone",
                             "noCache": false,
                             "link": null
                         }
@@ -64,7 +64,7 @@ const menuData = {
                         "component": "system/template/index",
                         "meta": {
                             "title": "模板管理",
-                            "icon": "user",
+                            "icon": "phone",
                             "noCache": false,
                             "link": null
                         }
@@ -80,7 +80,7 @@ const menuData = {
                 "alwaysShow": true,
                 "meta": {
                     "title": "资源",
-                    "icon": "system",
+                    "icon": "date",
                     "noCache": false,
                     "link": null
                 },
@@ -92,7 +92,7 @@ const menuData = {
                         "component": "system/resources/index",
                         "meta": {
                             "title": "资源管理",
-                            "icon": "user",
+                            "icon": "date",
                             "noCache": false,
                             "link": null
                         }
@@ -104,7 +104,7 @@ const menuData = {
                         "component": "system/resources/booking",
                         "meta": {
                             "title": "资源预约",
-                            "icon": "user",
+                            "icon": "date",
                             "noCache": false,
                             "link": null
                         }
@@ -120,7 +120,7 @@ const menuData = {
                 "alwaysShow": true,
                 "meta": {
                     "title": "报销",
-                    "icon": "system",
+                    "icon": "email",
                     "noCache": false,
                     "link": null
                 },
@@ -132,7 +132,7 @@ const menuData = {
                         "component": "system/expense/index",
                         "meta": {
                             "title": "报销管理",
-                            "icon": "user",
+                            "icon": "email",
                             "noCache": false,
                             "link": null
                         }
@@ -144,26 +144,52 @@ const menuData = {
                         "component": "system/expense/apply",
                         "meta": {
                             "title": "报销申请",
-                            "icon": "user",
+                            "icon": "email",
                             "noCache": false,
                             "link": null
                         }
                     },
 
                 ]
-            }
-        ],
-        "user":[
+            },
             {
-                "name": "System",
-                "path": "/system",
+                "name": "Notification",
+                "path": "/notification",
                 "hidden": false,
                 "redirect": "noRedirect",
                 "component": "Layout",
                 "alwaysShow": true,
                 "meta": {
-                    "title": "系统管理",
-                    "icon": "system",
+                    "title": "活动通知",
+                    "icon": "time",
+                    "noCache": false,
+                    "link": null
+                },
+                "children": [
+                    {
+                        "name": "Manage",
+                        "path": "manage",
+                        "hidden": false,
+                        "component": "system/notification/manage",
+                        "meta": {
+                            "title": "管理通知",
+                            "icon": "user",
+                            "noCache": false,
+                            "link": null
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Schedule",
+                "path": "/schedule",
+                "hidden": false,
+                "redirect": "noRedirect",
+                "component": "Layout",
+                "alwaysShow": true,
+                "meta": {
+                    "title": "日程管理",
+                    "icon": "date",
                     "noCache": false,
                     "link": null
                 },
@@ -172,16 +198,18 @@ const menuData = {
                         "name": "User",
                         "path": "user",
                         "hidden": false,
-                        "component": "system/user/index",
+                        "component": "system/schedule/index",
                         "meta": {
-                            "title": "用户管理",
-                            "icon": "user",
+                            "title": "日程管理",
+                            "icon": "date",
                             "noCache": false,
                             "link": null
                         }
                     }
                 ]
             },
+        ],
+        "user":[
             {
                 "name": "Activities",
                 "path": "/activities",
@@ -191,7 +219,7 @@ const menuData = {
                 "alwaysShow": true,
                 "meta": {
                     "title": "活动管理",
-                    "icon": "system",
+                    "icon": "phone",
                     "noCache": false,
                     "link": null
                 },
@@ -203,7 +231,7 @@ const menuData = {
                         "component": "system/act/index",
                         "meta": {
                             "title": "活动管理",
-                            "icon": "user",
+                            "icon": "phone",
                             "noCache": false,
                             "link": null
                         }
@@ -215,7 +243,7 @@ const menuData = {
                         "component": "system/template/index",
                         "meta": {
                             "title": "模板管理",
-                            "icon": "user",
+                            "icon": "phone",
                             "noCache": false,
                             "link": null
                         }
@@ -231,11 +259,23 @@ const menuData = {
                 "alwaysShow": true,
                 "meta": {
                     "title": "报销",
-                    "icon": "system",
+                    "icon": "email",
                     "noCache": false,
                     "link": null
                 },
                 "children": [
+                    {
+                        "name": "Index",
+                        "path": "index",
+                        "hidden": false,
+                        "component": "system/expense/index",
+                        "meta": {
+                            "title": "报销管理",
+                            "icon": "email",
+                            "noCache": false,
+                            "link": null
+                        }
+                    },
                     {
                         "name": "Apply",
                         "path": "apply",
@@ -250,7 +290,63 @@ const menuData = {
                     },
 
                 ]
-            }
+            },
+            {
+                "name": "Notification",
+                "path": "/notification",
+                "hidden": false,
+                "redirect": "noRedirect",
+                "component": "Layout",
+                "alwaysShow": true,
+                "meta": {
+                    "title": "活动通知",
+                    "icon": "time",
+                    "noCache": false,
+                    "link": null
+                },
+                "children": [
+                    {
+                        "name": "Index",
+                        "path": "index",
+                        "hidden": false,
+                        "component": "system/notification/index",
+                        "meta": {
+                            "title": "查看通知",
+                            "icon": "message",
+                            "noCache": false,
+                            "link": null
+                        }
+                    },
+                ]
+            },
+            {
+                "name": "Schedule",
+                "path": "/schedule",
+                "hidden": false,
+                "redirect": "noRedirect",
+                "component": "Layout",
+                "alwaysShow": true,
+                "meta": {
+                    "title": "日程管理",
+                    "icon": "date",
+                    "noCache": false,
+                    "link": null
+                },
+                "children": [
+                    {
+                        "name": "User",
+                        "path": "user",
+                        "hidden": false,
+                        "component": "system/schedule/index",
+                        "meta": {
+                            "title": "日程管理",
+                            "icon": "date",
+                            "noCache": false,
+                            "link": null
+                        }
+                    }
+                ]
+            },
         ]
     },
 };

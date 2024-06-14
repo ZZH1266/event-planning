@@ -13,17 +13,7 @@
                                 @keyup.enter.native="handleQuery"
                         />
                     </el-form-item>
-                    <el-form-item label="申请日期">
-                        <el-date-picker
-                                v-model="dateRange"
-                                style="width: 240px"
-                                value-format="yyyy-MM-dd"
-                                type="daterange"
-                                range-separator="-"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期"
-                        ></el-date-picker>
-                    </el-form-item>
+
                     <el-form-item>
                         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
                         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -46,13 +36,13 @@
                             ></el-switch>
                         </template>
                     </el-table-column>-->
-                    <el-table-column label="申请时间" align="center" prop="submittedAt" width="160">
+                    <el-table-column label="申请时间" align="center" prop="submittedTime" width="160">
                         <template slot-scope="scope">
-                            <span>{{ parseTime(scope.row.submittedAt) }}</span>
+                            <span>{{ parseTime(scope.row.submittedTime) }}</span>
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="操作" align="center" key="status">
+                    <el-table-column label="操作" align="center" key="status" v-if="sysUser.roles.includes('superadmin')">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
@@ -155,7 +145,7 @@
                             <el-table-column label="申请人" align="center" key="userId" prop="userId"/>
                             <el-table-column label="申请人姓名" align="center" key="username" prop="username"/>
                             <el-table-column label="状态" align="center" key="state" prop="state"/>
-                            <el-table-column label="操作" align="center" key="status">
+                            <el-table-column label="操作" align="center" key="status" >
                                 <template slot-scope="scope" v-if="scope.row.state == '申请中'">
                                     <el-button
                                             size="mini"
@@ -188,7 +178,9 @@
 </template>
 
 <script>
-    import {getUser, listUser} from "@/api/system/user";
+    import {listExpense} from "@/api/system/expense";
+    import {mapState} from "vuex";
+
     import {addActivities,listTemplate, listActivities,listParticipant,applyParticipant,rejectParticipant} from "@/api/system/activities";
 
 
@@ -217,8 +209,7 @@
                 // 总条数
                 total: 0,
                 // 资源表格数据
-                expenseList: [{"userId": 1122, "activityId": "1", "amount": 500, "description": "文化楼篮球场维修"}],
-                actList: [{"activityId":"1","amount":500,"description":"文化楼篮球场维修"}],
+                expenseList: [{"activityId":"1","amount":500,"description":"文化楼篮球场维修"}],
                 templateList: [],
                 //资源申请表格数据
                 participanList: null,
@@ -306,6 +297,11 @@
                 }
             };
         },
+        computed:{
+            ...mapState({
+                sysUser: state => state.user
+            }),
+        },
         watch: {
             // 根据名称筛选部门树
             deptName(val) {
@@ -313,7 +309,7 @@
             }
         },
         created() {
-            //this.getList();
+            this.getList();
             // this.getConfigKey("sys.user.initPassword").then(response => {
             //   this.initPassword = response.msg;
             // });
@@ -330,12 +326,14 @@
             /** 查询用户列表 */
             getList() {
                 this.loading = true;
-                listActivities(this.addDateRange(this.queryParams, this.dateRange)).then(res => {
-                        this.actList = res.data.records;
+                listExpense(this.addDateRange(this.queryParams, this.dateRange)).then(res => {
+                        this.expenseList = res.data.records;
                         this.total = res.data.total;
                         this.loading = false;
                     }
-                );
+                ).catch(err=>{
+                    this.loading = false;
+                });
             },
             getTemplateList(){
                 listTemplate(this.queryParams).then(response => {

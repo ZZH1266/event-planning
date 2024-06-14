@@ -16,12 +16,14 @@ import plugins from './plugins' // plugins
 import './assets/icons' // icon
 import './permission' // permission control
 import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, handleTree } from "@/utils/cms";
-// 分页组件
+// 鍒嗛〉缁勪欢
 import Pagination from "@/components/Pagination";
 
-// 头部标签组件
+// 澶撮儴鏍囩缁勪欢
 import VueMeta from 'vue-meta'
+import Chat from 'vue-beautiful-chat'
 
+Vue.use(Chat);
 
 Vue.component('Pagination', Pagination)
 

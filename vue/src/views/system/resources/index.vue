@@ -53,9 +53,9 @@
                             ></el-switch>
                         </template>
                     </el-table-column>-->
-                    <el-table-column label="创建时间" align="center" prop="createdAt" width="160">
+                    <el-table-column label="创建时间" align="center" prop="createTime" width="160">
                         <template slot-scope="scope">
-                            <span>{{ parseTime(scope.row.createdAt) }}</span>
+                            <span>{{ parseTime(scope.row.createTime) }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -205,7 +205,7 @@
 
 <script>
     import {getUser, listUser} from "@/api/system/user";
-    import {addActivities,listTemplate, listActivities,listParticipant,applyParticipant,rejectParticipant} from "@/api/system/activities";
+    import {addActivities,listTemplate, listResource} from "@/api/system/resource";
 
 
     export default {
@@ -322,7 +322,7 @@
             }
         },
         created() {
-            //this.getList();
+            this.getList();
             // this.getConfigKey("sys.user.initPassword").then(response => {
             //   this.initPassword = response.msg;
             // });
@@ -338,9 +338,8 @@
             },
             /** 查询用户列表 */
             getList() {
-                alert('ss');
                 this.loading = true;
-                listActivities(this.addDateRange(this.queryParams, this.dateRange)).then(res => {
+                listResource(this.addDateRange(this.queryParams, this.dateRange)).then(res => {
                         this.actList = res.data.records;
                         this.total = res.data.total;
                         this.loading = false;
